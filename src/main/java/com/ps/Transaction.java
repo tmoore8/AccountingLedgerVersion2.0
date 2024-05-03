@@ -15,11 +15,11 @@ public class Transaction {
     private String vendor;
     private float amount;
 
-    public Transaction(LocalDate date, LocalTime time, String vendor, String description, float amount) {
+    public Transaction(LocalDate date, LocalTime time,String description, String vendor, float amount) {
         this.date = date;
         this.time = time;
-        this.vendor = vendor;
         this.description = description;
+        this.vendor = vendor;
         this.amount = amount;
     }
 

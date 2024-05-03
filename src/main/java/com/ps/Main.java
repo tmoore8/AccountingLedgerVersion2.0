@@ -145,6 +145,7 @@ break;
                     break;
                 case 5:
                     System.out.println("Enter vendor name: ");
+
                     String vendorName = scanner.nextLine();
                     ArrayList<Transaction> vendorTransactions = ledger.searchByVendor(vendorName);
                     if(vendorTransactions.isEmpty()){

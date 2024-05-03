@@ -46,10 +46,10 @@ public class Ledger {
     }
 */
     // method to search transactions by vendor name
-    public ArrayList<Transaction> searchByVendor(String name) {
+    public ArrayList<Transaction> searchByVendor(String vendor) {
         ArrayList<Transaction> searchResults = new ArrayList<>();
         for (Transaction transaction : transactions) {
-            if (transaction.getVendor().toLowerCase().contains(name.toLowerCase())) {
+            if (transaction.getVendor().toLowerCase().contains(vendor.toLowerCase())) {
                 searchResults.add(transaction);
             }
         }
@@ -69,7 +69,9 @@ public class Ledger {
     private void updateTransactionsFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("transactions.txt", true))) {
             for (Transaction transaction : transactions) {
-                writer.write(transaction.toString());
+                String formattedTransaction = String.format("%s|%s|%s|%s|%.2f",transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+
+                writer.write(formattedTransaction);
                 writer.newLine();
             }
         } catch (IOException e) {

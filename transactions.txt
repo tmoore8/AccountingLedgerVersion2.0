@@ -1,8 +1,24 @@
 2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
-2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00Transaction{date=2023-04-15, time=10:13:25, description='Amazon', vendor='ergonomic keyboard', amount=-89.5}
-Transaction{date=2023-04-15, time=11:15, description='Joe', vendor='Invoice 1001 paid', amount=1500.0}
-Transaction{date=2024-05-03, time=05:48:31.850591, description='Paul', vendor='invoice 1002', amount=1000.0}
-Transaction{date=2023-04-15, time=10:13:25, description='Amazon', vendor='ergonomic keyboard', amount=-89.5}
-Transaction{date=2023-04-15, time=11:15, description='Joe', vendor='Invoice 1001 paid', amount=1500.0}
-Transaction{date=2024-05-03, time=05:48:31.850591, description='Paul', vendor='invoice 1002', amount=1000.0}
-Transaction{date=2024-05-03, time=05:48:50.816907, description='Amazon', vendor='gaming pc', amount=-1500.0}
+2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00
+
+
+
+
+
+
+2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
+2023-04-15|11:15|Invoice 1001 paid|Joe|1500.00
+2024-05-03|06:26:11.464771|Invoice 1002 paid|Joe|500.00
+2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
+2023-04-15|11:15|Invoice 1001 paid|Joe|1500.00
+2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
+2023-04-15|11:15|Invoice 1001 paid|Joe|1500.00
+2024-05-03|06:26:11.464771|Invoice 1002 paid|Joe|500.00
+2024-05-03|06:45:57.788110|Invoice 1002 paid|Joe|500.00
+2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
+2023-04-15|11:15|Invoice 1001 paid|Joe|1500.00
+2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
+2023-04-15|11:15|Invoice 1001 paid|Joe|1500.00
+2024-05-03|06:26:11.464771|Invoice 1002 paid|Joe|500.00
+2024-05-03|06:45:57.788110|Invoice 1002 paid|Joe|500.00
+2024-05-03|06:47:02.907095|Gaming Pc|Amazon|-1500.00
