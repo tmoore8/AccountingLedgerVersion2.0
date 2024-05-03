@@ -63,7 +63,6 @@ public class Main {
                     break;
                 case 3:
                     //display payments
-
                     ledger.displayOnlyPayments();
                     break;
                 case 4:
@@ -122,7 +121,6 @@ public class Main {
                     break;
                 case 3:
                     //year to date
-                    // Year to Date report
                     LocalDate currentYearFirstDay = LocalDate.now().withDayOfYear(1);
                     LocalDate currentYearLastDay = LocalDate.now().plusYears(1).withDayOfYear(1).minusDays(1);
 
@@ -212,7 +210,6 @@ public class Main {
         System.out.println("Payment made successfully.");
     }
 }
-
 
 
 

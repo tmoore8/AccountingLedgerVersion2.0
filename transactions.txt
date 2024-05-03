@@ -1,6 +1,10 @@
 2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
 2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00
-2024-02-13|17:30:45|wireless mouse|Amazon| 29.95
+2024-02-13|17:30:45|wireless mouse|Amazon|-29.95
+2024-01-04|15:11:00|Invoice 1002 paid|Joe|1250.00
+
+
+
 
 
 
@@ -9,17 +13,12 @@
 
 2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
 2023-04-15|11:15|Invoice 1001 paid|Joe|1500.00
-2024-05-03|06:26:11.464771|Invoice 1002 paid|Joe|500.00
+2024-02-13|17:30:45|wireless mouse|Amazon|-29.95
+2024-01-04|15:11|Invoice 1002 paid|Joe|1250.00
+2024-05-03|13:17:04.587862|Invoice 1002 paid|Joe|100.00
 2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
 2023-04-15|11:15|Invoice 1001 paid|Joe|1500.00
-2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
-2023-04-15|11:15|Invoice 1001 paid|Joe|1500.00
-2024-05-03|06:26:11.464771|Invoice 1002 paid|Joe|500.00
-2024-05-03|06:45:57.788110|Invoice 1002 paid|Joe|500.00
-2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
-2023-04-15|11:15|Invoice 1001 paid|Joe|1500.00
-2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
-2023-04-15|11:15|Invoice 1001 paid|Joe|1500.00
-2024-05-03|06:26:11.464771|Invoice 1002 paid|Joe|500.00
-2024-05-03|06:45:57.788110|Invoice 1002 paid|Joe|500.00
-2024-05-03|06:47:02.907095|Gaming Pc|Amazon|-1500.00
+2024-02-13|17:30:45|wireless mouse|Amazon|-29.95
+2024-01-04|15:11|Invoice 1002 paid|Joe|1250.00
+2024-05-03|13:17:04.587862|Invoice 1002 paid|Joe|100.00
+2024-05-03|13:17:25.589332|Keyboard|Amazon|-30.00

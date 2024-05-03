@@ -38,12 +38,6 @@ public class Ledger {
             System.out.println("Error reading from file");
         }
     }
-
-    /*  //Method to read list of transactions
-      public static ArrayList<Transaction> getTransactions() {
-          return transactions;
-      }
-  */
     // method to search transactions by vendor name
     public ArrayList<Transaction> searchByVendor(String vendor) {
         ArrayList<Transaction> searchResults = new ArrayList<>();
