@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.io.IOException;
 
 
-
 public class Ledger {
     //ArrayList to store transactions
     public ArrayList<Transaction> transactions;
@@ -40,11 +39,11 @@ public class Ledger {
         }
     }
 
-  /*  //Method to read list of transactions
-    public static ArrayList<Transaction> getTransactions() {
-        return transactions;
-    }
-*/
+    /*  //Method to read list of transactions
+      public static ArrayList<Transaction> getTransactions() {
+          return transactions;
+      }
+  */
     // method to search transactions by vendor name
     public ArrayList<Transaction> searchByVendor(String vendor) {
         ArrayList<Transaction> searchResults = new ArrayList<>();
@@ -55,21 +54,24 @@ public class Ledger {
         }
         return searchResults;
     }
-//method to add deposit to file(+transaction)
+
+    //method to add deposit to file(+transaction)
     public void addDepositToFile(LocalDate date, LocalTime time, String description, String vendor, float amount) {
         transactions.add(new Transaction(date, time, description, vendor, amount));
         updateTransactionsFile();
     }
-//method to make payment to file(-transaction)
+
+    //method to make payment to file(-transaction)
     public void makePaymentToFile(LocalDate date, LocalTime time, String description, String vendor, float amount) {
         transactions.add(new Transaction(date, time, description, vendor, -amount)); // Negative amount for payments
         updateTransactionsFile();
     }
-// method to write transactions to file
+
+    // method to write transactions to file
     private void updateTransactionsFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("transactions.txt", true))) {
             for (Transaction transaction : transactions) {
-                String formattedTransaction = String.format("%s|%s|%s|%s|%.2f",transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+                String formattedTransaction = String.format("%s|%s|%s|%s|%.2f", transaction.getDate(), transaction.getTime(), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
 
                 writer.write(formattedTransaction);
                 writer.newLine();
@@ -78,7 +80,8 @@ public class Ledger {
             System.out.println("Error updating transactions file");
         }
     }
-        public void displayAllTransactions() {
+
+    public void displayAllTransactions() {
         System.out.println("All Transactions:");
         for (Transaction transaction : transactions) {
             System.out.println(transaction);
@@ -102,6 +105,7 @@ public class Ledger {
             }
         }
     }
+
     public ArrayList<Transaction> filterTransactionsByDateRange(LocalDate startDate, LocalDate endDate) {
         ArrayList<Transaction> filteredTransactions = new ArrayList<>();
         for (Transaction transaction : transactions) {

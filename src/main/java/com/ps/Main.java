@@ -21,15 +21,15 @@ public class Main {
             switch (userIn) {
                 case 1:
                     //Add a deposit prompt the user for a deposit information and save it to CSV
-                    addDeposit(scanner,ledger);
+                    addDeposit(scanner, ledger);
                     break;
                 case 2:
                     // prompt user for debit information to save to file
-                    makePayment(scanner,ledger);
+                    makePayment(scanner, ledger);
                     break;
                 case 3:
                     //display ledger menu
-                    displayLedgerMenu(scanner,ledger);
+                    displayLedgerMenu(scanner, ledger);
                     break;
                 case 4:
                     System.out.println("Thank you for banking with us.");
@@ -39,8 +39,9 @@ public class Main {
             }
         } while (userIn != 4);
     }
-//method to display ledger menu
-    private static void displayLedgerMenu(Scanner scanner, Ledger ledger){
+
+    //method to display ledger menu
+    private static void displayLedgerMenu(Scanner scanner, Ledger ledger) {
         System.out.println("Ledger: ");
         int ledgerCommand;
         do {
@@ -78,6 +79,7 @@ public class Main {
         } while (ledgerCommand != 5);
 
     }
+
     //method to display reports menu
     private static void displayReportsMenu(Scanner scanner, Ledger ledger) {
         int reportCommand;
@@ -105,7 +107,7 @@ public class Main {
                     for (Transaction transaction : monthToDateTransactions) {
                         System.out.println(transaction);
                     }
-break;
+                    break;
                 case 2:
                     // previous month
                     LocalDate previousMonthFirstDay = LocalDate.now().minusMonths(1).withDayOfMonth(1);
@@ -148,11 +150,11 @@ break;
 
                     String vendorName = scanner.nextLine();
                     ArrayList<Transaction> vendorTransactions = ledger.searchByVendor(vendorName);
-                    if(vendorTransactions.isEmpty()){
-                        System.out.println("No transactions for vendor: "+ vendorName);
+                    if (vendorTransactions.isEmpty()) {
+                        System.out.println("No transactions for vendor: " + vendorName);
                     } else {
-                        System.out.println("Transactions for vendor "+ vendorName+ ": ");
-                        for (Transaction transaction : vendorTransactions){
+                        System.out.println("Transactions for vendor " + vendorName + ": ");
+                        for (Transaction transaction : vendorTransactions) {
                             System.out.println(transaction);
                         }
                     }
@@ -165,7 +167,8 @@ break;
             }
         } while (reportCommand != 6);
     }
-   // method to receive deposit inputs
+
+    // method to receive deposit inputs
     private static void addDeposit(Scanner scanner, Ledger ledger) {
 
         LocalDate date = LocalDate.now();
@@ -186,7 +189,8 @@ break;
         ledger.addDepositToFile(date, time, description, vendor, amount);
         System.out.println("Deposit added successfully.");
     }
-//method to receive payment inputs
+
+    //method to receive payment inputs
     private static void makePayment(Scanner scanner, Ledger ledger) {
 
         LocalDate date = LocalDate.now();
