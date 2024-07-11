@@ -1,17 +1,36 @@
 package com.ps;
 
+import com.ps.DAOs.TransactionDao;
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Scanner;
 
 public class Main {
+    private static TransactionDao transactionDao;
     public static void main(String[] args) {
+        display(args);
+    }
+    public static void init(String[] args){
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl("jdbc:mysql://localhost:3306/AccountingLedger");
+        basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        basicDataSource.setUsername(args[0]);
+        basicDataSource.setPassword(args[1]);
+
+        transactionDao = new TransactionDao(basicDataSource);
+
+    }
+    public static void display(String[] args){
+        init(args);
         Scanner scanner = new Scanner(System.in);
         Ledger ledger = new Ledger();
         int userIn;
         do {
-            System.out.println("Welcome to Moorehead Accounting. Please select an option: ");
+            System.out.println("Welcome to HAMM Accounting. Please select an option: ");
             System.out.println("\t1) Add deposit");
             System.out.println("\t2) Make Payment");
             System.out.println("\t3) Display Ledger");
@@ -39,6 +58,7 @@ public class Main {
             }
         } while (userIn != 4);
     }
+
 
     //method to display ledger menu
     private static void displayLedgerMenu(Scanner scanner, Ledger ledger) {
