@@ -4,6 +4,11 @@ import com.ps.Transaction;
 import com.ps.interfaces.TransactionInt;
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionDao implements TransactionInt {
@@ -15,7 +20,25 @@ public class TransactionDao implements TransactionInt {
     
     @Override
     public List<Transaction> getAllTransactions() {
-        return null;
+        List<Transaction> transactions = new ArrayList<>();
+        
+        String sql = "SELECT * FROM transactions";
+        
+        try (
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet row = statement.executeQuery();
+        ) {
+           while (row.next()) {
+               Transaction transaction = mapRow(row);
+               
+               transactions.add(transaction);
+           }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return transactions;
     }
     
     @Override
@@ -46,5 +69,15 @@ public class TransactionDao implements TransactionInt {
     @Override
     public void deleteTransaction(int id) {
     
+    }
+    
+    private Transaction mapRow(ResultSet row) throws SQLException {
+        int    id          = row.getInt("transaction_id");
+        String date        = row.getTimestamp("date").toString();
+        String description = row.getString("description");
+        String vendor      = row.getString("vendor");
+        float  amount      = row.getFloat("amount");
+        
+        return new Transaction(id, date, description, vendor, amount);
     }
 }
