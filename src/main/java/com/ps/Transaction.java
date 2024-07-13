@@ -8,8 +8,8 @@ import java.time.LocalTime;
 
 public class Transaction {
     private int id;
-    private LocalDate date;
-    private LocalTime time;
+    private LocalDate date; // Make this "String date"
+    private LocalTime time; // Remove this
     private String description;
     private String vendor;
     private float amount;
