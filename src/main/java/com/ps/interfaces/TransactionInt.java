@@ -9,7 +9,7 @@ public interface TransactionInt {
     List<Transaction> getAllPayments();
     List<Transaction> getAllDeposits();
     Transaction getOneTransaction(int id);
-    int createTransaction(Transaction transaction);
+    Transaction createTransaction(Transaction transaction, boolean isPayment, boolean isDeposit);
     void updateTransaction(int id, Transaction transaction);
     void deleteTransaction(int id);
     
