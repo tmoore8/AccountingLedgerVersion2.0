@@ -138,7 +138,7 @@ public class TransactionDao implements TransactionInt
     }
     
     @Override
-    public Transaction createTransaction(Transaction transaction, boolean isPayment, boolean isDeposit)
+    public Transaction create(Transaction transaction, boolean isPayment, boolean isDeposit)
     {
         Timestamp date = java.sql.Timestamp.valueOf(transaction.getDate());
         
@@ -203,13 +203,13 @@ public class TransactionDao implements TransactionInt
     }
     
     @Override
-    public void updateTransaction(int id, Transaction transaction)
+    public void update(int id, Transaction transaction)
     {
     
     }
     
     @Override
-    public void deleteTransaction(int id)
+    public void delete(int id)
     {
     
     }
