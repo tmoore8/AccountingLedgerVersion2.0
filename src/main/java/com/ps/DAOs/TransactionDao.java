@@ -5,8 +5,6 @@ import com.ps.interfaces.TransactionInt;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,10 +140,7 @@ public class TransactionDao implements TransactionInt
     @Override
     public Transaction createTransaction(Transaction transaction, boolean isPayment, boolean isDeposit)
     {
-        LocalDateTime     dateTime          = LocalDateTime.now();
-        DateTimeFormatter formatter         = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String            formattedDateTime = dateTime.format(formatter);
-        Timestamp         date              = java.sql.Timestamp.valueOf(formattedDateTime);
+        Timestamp date = java.sql.Timestamp.valueOf(transaction.getDate());
         
         String transactionSql = "INSERT INTO transactions (date, description, vendor, amount) " +
                 " VALUES (?, ?, ?, ?);";
