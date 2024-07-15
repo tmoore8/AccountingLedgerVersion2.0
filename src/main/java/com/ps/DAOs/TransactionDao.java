@@ -53,7 +53,7 @@ public class TransactionDao implements TransactionInt
     {
         List<Transaction> payments = new ArrayList<>();
         
-        String sql = "SELECT * " +
+        String sql = "SELECT p.*, date, description, vendor, amount " +
                 " FROM payments AS p " +
                 " JOIN transactions AS t " +
                 "   ON p.transaction_id = t.transaction_id";
@@ -81,7 +81,31 @@ public class TransactionDao implements TransactionInt
     @Override
     public List<Transaction> getAllDeposits()
     {
-        return null;
+        List<Transaction> deposits = new ArrayList<>();
+    
+        String sql = "SELECT d.*, date, description, vendor, amount " +
+                " FROM deposits AS d " +
+                " JOIN transactions AS t " +
+                "   ON d.transaction_id = t.transaction_id";
+    
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet row = statement.executeQuery();
+        )
+        {
+            while (row.next()) {
+                Transaction transaction = mapRow(row);
+    
+                deposits.add(transaction);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    
+        return deposits;
     }
     
     @Override
