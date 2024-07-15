@@ -108,7 +108,7 @@ public class TransactionDao implements TransactionInt
     }
     
     @Override
-    public Transaction getOneTransaction(int id)
+    public Transaction getTransactionById(int id)
     {
         String sql = "SELECT * " +
                 " FROM transactions " +
@@ -189,7 +189,7 @@ public class TransactionDao implements TransactionInt
                         }
                         
                         // return the newly inserted transaction
-                        return getOneTransaction(transactionId);
+                        return getTransactionById(transactionId);
                     }
                 }
             }
@@ -203,15 +203,79 @@ public class TransactionDao implements TransactionInt
     }
     
     @Override
-    public void update(int id, Transaction transaction)
+    public Transaction update(int id, Transaction transaction)
     {
-    
+        Timestamp date = java.sql.Timestamp.valueOf(transaction.getDate());
+        
+        String sql = "UPDATE transactions" +
+                " SET date = ? " +
+                "   , description = ? " +
+                "   , vendor = ? " +
+                "   , amount = ? " +
+                " WHERE transaction_id = ?;";
+        
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        )
+        {
+            ps.setTimestamp(1, date);
+            ps.setString(2, transaction.getDescription());
+            ps.setString(3, transaction.getVendor());
+            ps.setFloat(4, transaction.getAmount());
+            ps.setInt(5, id);
+            
+            ps.executeUpdate();
+            
+            return getTransactionById(id);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return  null;
     }
     
     @Override
-    public void delete(int id)
+    public Transaction delete(int id)
     {
+        String transactionSql = "DELETE FROM transactions " +
+                " WHERE transaction_id = ?;";
+        
+        String paymentSql = "DELETE FROM payments " +
+                " WHERE transaction_id = ?;";
+        
+        String depositSql = "DELETE FROM deposits " +
+                " WHERE transaction_id = ?;";
+        
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement transactionPs = connection.prepareStatement(transactionSql);
+                PreparedStatement paymentPs = connection.prepareStatement(paymentSql);
+                PreparedStatement depositPs = connection.prepareStatement(depositSql);
+        )
+        {
+            // delete from transactions table
+            transactionPs.setInt(1, id);
+            transactionPs.executeUpdate();
     
+            // delete from payments table
+            paymentPs.setInt(1, id);
+            paymentPs.executeUpdate();
+    
+            // delete from deposits table
+            depositPs.setInt(1, id);
+            depositPs.executeUpdate();
+            
+            return getTransactionById(id);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
     }
     
     private Transaction mapRow(ResultSet row) throws SQLException
