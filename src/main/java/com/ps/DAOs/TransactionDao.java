@@ -4,10 +4,9 @@ import com.ps.Transaction;
 import com.ps.interfaces.TransactionInt;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +28,8 @@ public class TransactionDao implements TransactionInt
         
         try(
                 Connection connection = basicDataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql);
-                ResultSet row = statement.executeQuery();
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ResultSet row = ps.executeQuery();
         )
         {
             while(row.next())
@@ -60,8 +59,8 @@ public class TransactionDao implements TransactionInt
         
         try(
                 Connection connection = basicDataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql);
-                ResultSet row = statement.executeQuery();
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ResultSet row = ps.executeQuery();
         )
         {
             while(row.next())
@@ -91,8 +90,8 @@ public class TransactionDao implements TransactionInt
         
         try(
                 Connection connection = basicDataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql);
-                ResultSet row = statement.executeQuery();
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ResultSet row = ps.executeQuery();
         )
         {
             while(row.next())
@@ -119,12 +118,12 @@ public class TransactionDao implements TransactionInt
         
         try(
                 Connection connection = basicDataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)
+                PreparedStatement ps = connection.prepareStatement(sql)
         )
         {
-            statement.setInt(1, id);
+            ps.setInt(1, id);
             
-            try(ResultSet row = statement.executeQuery();)
+            try(ResultSet row = ps.executeQuery();)
             {
                 if(row.next())
                 {
@@ -141,9 +140,71 @@ public class TransactionDao implements TransactionInt
     }
     
     @Override
-    public int createTransaction(Transaction transaction)
+    public Transaction createTransaction(Transaction transaction, boolean isPayment, boolean isDeposit)
     {
-        return 0;
+        LocalDateTime     dateTime          = LocalDateTime.now();
+        DateTimeFormatter formatter         = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String            formattedDateTime = dateTime.format(formatter);
+        Timestamp         date              = java.sql.Timestamp.valueOf(formattedDateTime);
+        
+        String transactionSql = "INSERT INTO transactions (date, description, vendor, amount) " +
+                " VALUES (?, ?, ?, ?);";
+        
+        String paymentSql = "INSERT INTO payments (transaction_id) " +
+                "VALUES (?);";
+        
+        String depositSql = "INSERT INTO deposits (transaction_id) " +
+                " VALUES (?);";
+        
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement transactionPs = connection.prepareStatement(transactionSql, PreparedStatement.RETURN_GENERATED_KEYS);
+                PreparedStatement paymentPs = connection.prepareStatement(paymentSql);
+                PreparedStatement depositPs = connection.prepareStatement(depositSql);
+        )
+        {
+            transactionPs.setTimestamp(1, date);
+            transactionPs.setString(2, transaction.getDescription());
+            transactionPs.setString(3, transaction.getVendor());
+            transactionPs.setFloat(4, transaction.getAmount());
+            
+            int rowsAffected = transactionPs.executeUpdate();
+            
+            if(rowsAffected > 0)
+            {
+                try(ResultSet generatedKeys = transactionPs.getGeneratedKeys();)
+                {
+                    if(generatedKeys.next())
+                    {
+                        // get id of the newly inserted transaction
+                        int transactionId = generatedKeys.getInt(1);
+                        
+                        // set/update the id of the transaction object that's being passed
+                        transaction.setId(transactionId);
+                        
+                        // add newly created transaction to either the Payments or Deposits table
+                        if(isDeposit)
+                        {
+                            depositPs.setInt(1, transactionId);
+                            depositPs.executeUpdate();
+                        } else if(isPayment)
+                        {
+                            paymentPs.setInt(1, transactionId);
+                            paymentPs.executeUpdate();
+                        }
+                        
+                        // return the newly inserted transaction
+                        return getOneTransaction(transactionId);
+                    }
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
     }
     
     @Override
