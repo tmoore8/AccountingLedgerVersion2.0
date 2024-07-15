@@ -1,24 +1,40 @@
 package com.ps;
 
+import com.ps.DAOs.TransactionDao;
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+    private static TransactionDao transactionDao;
+
     public static void main(String[] args) {
+        display(args);
+    }
+
+    public static void init(String[] args) {
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl("jdbc:mysql://localhost:3306/AccountingLedger");
+        basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        basicDataSource.setUsername(args[0]);
+        basicDataSource.setPassword(args[1]);
+        transactionDao = new TransactionDao(basicDataSource);
+    }
+
+    public static void display(String[] args) {
+        init(args);
         Scanner scanner = new Scanner(System.in);
         Ledger ledger = new Ledger();
         int userIn;
         do {
-            System.out.println("Welcome to Moorehead Accounting. Please select an option: ");
+            System.out.println("Welcome to HAMM Accounting. Please select an option: ");
             System.out.println("\t1) Add deposit");
             System.out.println("\t2) Make Payment");
             System.out.println("\t3) Display Ledger");
             System.out.println("\t4) Exit");
             userIn = scanner.nextInt();
-
-
             switch (userIn) {
                 case 1:
                     //Add a deposit prompt the user for a deposit information and save it to CSV
@@ -46,8 +62,8 @@ public class Main {
         System.out.println("Ledger: ");
         int ledgerCommand;
         do {
-            System.out.println("\t1) Display all entries: ");
-            System.out.println("\t2) Display deposits;");
+            System.out.println("\t1) Display all entries");
+            System.out.println("\t2) Display deposits");
             System.out.println("\t3) Display Payments");
             System.out.println("\t4) Reports Menu");
             System.out.println("\t5) Back");
@@ -74,10 +90,8 @@ public class Main {
                     break;
                 default:
                     System.out.println("Invalid option.");
-
             }
         } while (ledgerCommand != 5);
-
     }
 
     //method to display reports menu
@@ -85,24 +99,22 @@ public class Main {
         int reportCommand;
         do {
             System.out.println("Search Reports by: ");
-            System.out.println("\t1) Month to Date: ");
-            System.out.println("\t2) Previous Month;");
+            System.out.println("\t1) Month to Date");
+            System.out.println("\t2) Previous Month");
             System.out.println("\t3) Year to Date");
             System.out.println("\t4) Previous Year");
             System.out.println("\t5) Vendor");
             System.out.println("\t6) Back");
+
             reportCommand = scanner.nextInt();
             scanner.nextLine();//consume new line;
-
             switch (reportCommand) {
                 case 1:
                     //month to date
                     LocalDate currentDate = LocalDate.now();
                     LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
                     LocalDate lastDayOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
-
                     ArrayList<Transaction> monthToDateTransactions = ledger.filterTransactionsByDateRange(firstDayOfMonth, lastDayOfMonth);
-
                     System.out.println("Month to Date Transactions:");
                     for (Transaction transaction : monthToDateTransactions) {
                         System.out.println(transaction);
@@ -112,9 +124,7 @@ public class Main {
                     // previous month
                     LocalDate previousMonthFirstDay = LocalDate.now().minusMonths(1).withDayOfMonth(1);
                     LocalDate previousMonthLastDay = previousMonthFirstDay.withDayOfMonth(previousMonthFirstDay.lengthOfMonth());
-
                     ArrayList<Transaction> previousMonthTransactions = ledger.filterTransactionsByDateRange(previousMonthFirstDay, previousMonthLastDay);
-
                     System.out.println("Previous Month Transactions:");
                     for (Transaction transaction : previousMonthTransactions) {
                         System.out.println(transaction);
@@ -124,9 +134,7 @@ public class Main {
                     //year to date
                     LocalDate currentYearFirstDay = LocalDate.now().withDayOfYear(1);
                     LocalDate currentYearLastDay = LocalDate.now().plusYears(1).withDayOfYear(1).minusDays(1);
-
                     ArrayList<Transaction> yearToDateTransactions = ledger.filterTransactionsByDateRange(currentYearFirstDay, currentYearLastDay);
-
                     System.out.println("Year to Date Transactions:");
                     for (Transaction transaction : yearToDateTransactions) {
                         System.out.println(transaction);
@@ -135,9 +143,7 @@ public class Main {
                 case 4:
                     LocalDate previousYearFirstDay = LocalDate.now().minusYears(1).withDayOfYear(1);
                     LocalDate previousYearLastDay = LocalDate.now().withDayOfYear(1).minusDays(1);
-
                     ArrayList<Transaction> previousYearTransactions = ledger.filterTransactionsByDateRange(previousYearFirstDay, previousYearLastDay);
-
                     System.out.println("Previous Year Transactions:");
                     for (Transaction transaction : previousYearTransactions) {
                         System.out.println(transaction);
@@ -145,8 +151,7 @@ public class Main {
                     //previous year
                     break;
                 case 5:
-                    System.out.println("Enter vendor name: ");
-
+                    System.out.print("Enter vendor name: ");
                     String vendorName = scanner.nextLine();
                     ArrayList<Transaction> vendorTransactions = ledger.searchByVendor(vendorName);
                     if (vendorTransactions.isEmpty()) {
@@ -159,21 +164,22 @@ public class Main {
                     }
                     break;
                 case 6:
+
                     break;
                 default:
                     System.out.println("Invalid option.");
-
             }
         } while (reportCommand != 6);
     }
 
     // method to receive deposit inputs
-
-
     private static String[] addDeposit(Scanner scanner) {
 
 
-        System.out.print("Enter description of your deposit: ");
+        boolean isPayment = false; // use for transactionDao.create()
+        boolean isDeposit = true; // use for transactionDao.create()
+
+        System.out.print("Enter the description of your deposit: ");
         String description = scanner.nextLine();
 
 
@@ -194,13 +200,16 @@ public class Main {
             return null;
         }
     }
-    //method to receive payment inputs
 
+
+    //method to receive payment inputs
 
     private static String[] makePayment(Scanner scanner) {
 
+        boolean isPayment = false; // use for transactionDao.create()
+        boolean isDeposit = true; // use for transactionDao.create()
 
-        System.out.print("Enter description of your payment: ");
+        System.out.print("Enter the description of your payment: ");
         String description = scanner.nextLine();
 
 
@@ -221,14 +230,7 @@ public class Main {
             return null;
         }
     }
+
+
 }
-
-
-
-
-
-
-
-
-
 
