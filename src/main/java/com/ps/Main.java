@@ -77,17 +77,17 @@ public class Main {
             switch (ledgerCommand) {
                 case 1:
                     //display all entries
-                    ArrayList<Transaction> allTransactions = ledger.displayAllTransactions();
+                    List<Transaction> allTransactions = transactionDao.getAllTransactions();
                     displayTransactions(allTransactions);
                     break;
                 case 2:
                     // display deposits
-                    ArrayList<Transaction> onlyDepositsTransactions = ledger.displayOnlyDeposits();
+                    List<Transaction> onlyDepositsTransactions = transactionDao.getAllDeposits();
                     displayTransactions(onlyDepositsTransactions);
                     break;
                 case 3:
                     //display payments
-                    ArrayList<Transaction> onlyPaymentsTransactions = ledger.displayOnlyPayments();
+                    List<Transaction> onlyPaymentsTransactions = transactionDao.getAllPayments();
                     displayTransactions(onlyPaymentsTransactions);
                     break;
                 case 4:
@@ -161,7 +161,7 @@ public class Main {
                     System.out.println("Enter vendor name: ");
 
                     String vendorName = scanner.nextLine();
-                    ArrayList<Transaction> vendorTransactions = ledger.searchByVendor(vendorName);
+                    List<Transaction> vendorTransactions = transactionDao.searchByVendor(vendorName);
                     if (vendorTransactions.isEmpty()) {
                         System.out.println("No transactions for vendor: " + vendorName);
                     } else {
@@ -178,25 +178,21 @@ public class Main {
 
                             if(!startDateInput.isEmpty() && endDateInput.isEmpty()) {
 
-                                LocalDate startDate = LocalDate.parse(startDateInput);
-                                ArrayList<Transaction> startDateList = ledger.searchByOneDate(startDate);
+                                List<Transaction> startDateList = transactionDao.searchByOneDate(startDateInput);
 
                                 displayTransactions(startDateList);
                                 break;
 
                             } else if(startDateInput.isEmpty() && !endDateInput.isEmpty()) {
 
-                                LocalDate endDate = LocalDate.parse(endDateInput);
-                                ArrayList<Transaction> endDateList = ledger.searchByOneDate(endDate);
+                                List<Transaction> endDateList = transactionDao.searchByOneDate(endDateInput);
 
                                 displayTransactions(endDateList);
                                 break;
 
                             } else if (!startDateInput.isEmpty() && !endDateInput.isEmpty()) {
 
-                                LocalDate startDate = LocalDate.parse(startDateInput);
-                                LocalDate endDate = LocalDate.parse(endDateInput);
-                                ArrayList<Transaction> bothDatesList = ledger.searchByDates(startDate, endDate);
+                                List<Transaction> bothDatesList = transactionDao.searchByDates(startDateInput, endDateInput);
 
                                 displayTransactions(bothDatesList);
                                 break;
@@ -207,7 +203,7 @@ public class Main {
 
                             if (!descriptionCustomSearch.isEmpty()) {
 
-                                ArrayList<Transaction> descriptionList = ledger.searchByDescription(descriptionCustomSearch);
+                                List<Transaction> descriptionList = transactionDao.searchByDescription(descriptionCustomSearch);
                                 displayTransactions(descriptionList);
                                 break;
                             }
@@ -217,7 +213,7 @@ public class Main {
 
                             if (!vendorCustomSearch.isEmpty()) {
 
-                                ArrayList<Transaction> vendorList = ledger.searchByVendor(vendorCustomSearch);
+                                List<Transaction> vendorList = transactionDao.searchByVendor(vendorCustomSearch);
                                 displayTransactions(vendorList);
                                 break;
                             }
@@ -227,7 +223,7 @@ public class Main {
                         scanner.nextLine();
                             if (amountCustomSearch != null) {
 
-                                ArrayList<Transaction> amountList = ledger.searchByAmount(amountCustomSearch);
+                                List<Transaction> amountList = transactionDao.searchByAmount(amountCustomSearch);
                                 displayTransactions(amountList);
                                 break;
                             }

@@ -277,6 +277,142 @@ public class TransactionDao implements TransactionInt
         
         return null;
     }
+
+    public List<Transaction> searchByOneDate(String date) {
+
+        List<Transaction> transactions = new ArrayList<>();
+
+        String dateQuery = "SELECT * FROM transactions WHERE date LIKE '%?%' ORDER BY date DESC;";
+
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(dateQuery)
+        ) {
+            preparedStatement.setString(1, date);
+
+            try(ResultSet row = preparedStatement.executeQuery()) {
+                while(row.next()) {
+                    Transaction transaction = mapRow(row);
+
+                    transactions.add(transaction);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return transactions;
+
+    }
+
+    public List<Transaction> searchByDates(String startDate, String endDate) {
+
+        List<Transaction> transactions = new ArrayList<>();
+
+        String dateQuery = "SELECT * FROM transactions WHERE date BETWEEN '?' AND '?' ORDER BY date DESC;";
+
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(dateQuery)
+        ) {
+            preparedStatement.setString(1, startDate);
+            preparedStatement.setString(2, endDate);
+
+            try(ResultSet row = preparedStatement.executeQuery()) {
+                while(row.next()) {
+                    Transaction transaction = mapRow(row);
+
+                    transactions.add(transaction);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return transactions;
+
+    }
+
+    public List<Transaction> searchByDescription(String description) {
+
+        List<Transaction> transactions = new ArrayList<>();
+
+        String dateQuery = "SELECT * FROM transactions WHERE description LIKE '?' ORDER BY date DESC;";
+
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(dateQuery)
+        ) {
+            preparedStatement.setString(1, description);
+
+            try(ResultSet row = preparedStatement.executeQuery()) {
+                while(row.next()) {
+                    Transaction transaction = mapRow(row);
+
+                    transactions.add(transaction);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return transactions;
+
+    }
+
+    public List<Transaction> searchByVendor(String vendor) {
+
+        List<Transaction> transactions = new ArrayList<>();
+
+        String dateQuery = "SELECT * FROM transactions WHERE vendor LIKE '?' ORDER BY date DESC;";
+
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(dateQuery)
+        ) {
+            preparedStatement.setString(1, vendor);
+
+            try(ResultSet row = preparedStatement.executeQuery()) {
+                while(row.next()) {
+                    Transaction transaction = mapRow(row);
+
+                    transactions.add(transaction);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return transactions;
+
+    }
+
+    public List<Transaction> searchByAmount(float amount) {
+
+        List<Transaction> transactions = new ArrayList<>();
+
+        String dateQuery = "SELECT * FROM transactions WHERE amount = ? ORDER BY date DESC;";
+
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(dateQuery)
+        ) {
+            preparedStatement.setFloat(1, amount);
+
+            try(ResultSet row = preparedStatement.executeQuery()) {
+                while(row.next()) {
+                    Transaction transaction = mapRow(row);
+
+                    transactions.add(transaction);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return transactions;
+
+    }
     
     private Transaction mapRow(ResultSet row) throws SQLException
     {
