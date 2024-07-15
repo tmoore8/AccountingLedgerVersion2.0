@@ -1,50 +1,32 @@
 package com.ps;
 
-import com.ps.DAOs.TransactionDao;
-import org.apache.commons.dbcp2.BasicDataSource;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Scanner;
 
 public class Main {
-    private static TransactionDao transactionDao;
     public static void main(String[] args) {
-        display(args);
-    }
-    public static void init(String[] args){
-        BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl("jdbc:mysql://localhost:3306/AccountingLedger");
-        basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        basicDataSource.setUsername(args[0]);
-        basicDataSource.setPassword(args[1]);
-
-        transactionDao = new TransactionDao(basicDataSource);
-
-    }
-    public static void display(String[] args){
-        init(args);
         Scanner scanner = new Scanner(System.in);
         Ledger ledger = new Ledger();
         int userIn;
         do {
-            System.out.println("Welcome to HAMM Accounting. Please select an option: ");
+            System.out.println("Welcome to Moorehead Accounting. Please select an option: ");
             System.out.println("\t1) Add deposit");
             System.out.println("\t2) Make Payment");
             System.out.println("\t3) Display Ledger");
             System.out.println("\t4) Exit");
             userIn = scanner.nextInt();
 
+
             switch (userIn) {
                 case 1:
                     //Add a deposit prompt the user for a deposit information and save it to CSV
-                    addDeposit(scanner, ledger);
+                    addDeposit(scanner);
                     break;
                 case 2:
                     // prompt user for debit information to save to file
-                    makePayment(scanner, ledger);
+                    makePayment(scanner);
                     break;
                 case 3:
                     //display ledger menu
@@ -58,7 +40,6 @@ public class Main {
             }
         } while (userIn != 4);
     }
-
 
     //method to display ledger menu
     private static void displayLedgerMenu(Scanner scanner, Ledger ledger) {
@@ -187,51 +168,58 @@ public class Main {
     }
 
     // method to receive deposit inputs
-    private static void addDeposit(Scanner scanner, Ledger ledger) {
-        boolean isPayment = false; // use for transactionDao.create()
-        boolean isDeposit = true; // use for transactionDao.create()
-        
-        LocalDate date = LocalDate.now();
 
-        LocalTime time = LocalTime.now();
-        scanner.nextLine();
 
-        System.out.print("Enter deposit description: ");
+    private static String[] addDeposit(Scanner scanner) {
+
+
+        System.out.print("Enter description of your deposit: ");
         String description = scanner.nextLine();
 
-        System.out.print("Enter deposit vendor: ");
+
+        System.out.print("Enter the vendor: ");
         String vendor = scanner.nextLine();
 
-        System.out.print("Enter deposit amount: ");
-        float amount = scanner.nextFloat();
-        scanner.nextLine();//consume new line
+        System.out.print("Enter the dollar amount: $");
 
-        ledger.addDepositToFile(date, time, description, vendor, amount);
-        System.out.println("Deposit added successfully.");
+        // checks to see if the user put a double value or not.
+        if (scanner.hasNextDouble()) {
+            double dollarAmount = scanner.nextDouble();
+            scanner.nextLine();
+
+            return new String[]{description, vendor, Double.toString(dollarAmount)};
+        } else {
+            scanner.nextLine();
+            System.out.println("\nYou have entered an incorrect input type. Please try again.");
+            return null;
+        }
     }
-
     //method to receive payment inputs
-    private static void makePayment(Scanner scanner, Ledger ledger) {
-        boolean isPayment = true; // use for transactionDao.create()
-        boolean isDeposit = false; // use for transactionDao.create()
-        
-        LocalDate date = LocalDate.now();
 
-        LocalTime time = LocalTime.now();
-        scanner.nextLine();
 
-        System.out.print("Enter payment description: ");
+    private static String[] makePayment(Scanner scanner) {
+
+
+        System.out.print("Enter description of your payment: ");
         String description = scanner.nextLine();
 
-        System.out.print("Enter payment vendor: ");
+
+        System.out.print("Enter the vendor: ");
         String vendor = scanner.nextLine();
 
-        System.out.print("Enter payment amount: ");
-        float amount = scanner.nextFloat();
-        scanner.nextLine();//consume new line
+        System.out.print("Enter the dollar amount: $");
 
-        ledger.makePaymentToFile(date, time, description, vendor, amount);
-        System.out.println("Payment made successfully.");
+        // checks to see if the user put a double value or not.
+        if (scanner.hasNextDouble()) {
+            double dollarAmount = scanner.nextDouble();
+            scanner.nextLine();
+
+            return new String[]{description, vendor, Double.toString(dollarAmount)};
+        } else {
+            scanner.nextLine();
+            System.out.println("\nYou have entered an incorrect input type. Please try again.");
+            return null;
+        }
     }
 }
 
