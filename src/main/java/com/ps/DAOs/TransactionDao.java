@@ -62,9 +62,10 @@ public class TransactionDao implements TransactionInt
                 Connection connection = basicDataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet row = statement.executeQuery();
-                )
+        )
         {
-            while (row.next()) {
+            while(row.next())
+            {
                 Transaction transaction = mapRow(row);
                 
                 payments.add(transaction);
@@ -82,21 +83,22 @@ public class TransactionDao implements TransactionInt
     public List<Transaction> getAllDeposits()
     {
         List<Transaction> deposits = new ArrayList<>();
-    
+        
         String sql = "SELECT d.*, date, description, vendor, amount " +
                 " FROM deposits AS d " +
                 " JOIN transactions AS t " +
                 "   ON d.transaction_id = t.transaction_id";
-    
+        
         try(
                 Connection connection = basicDataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet row = statement.executeQuery();
         )
         {
-            while (row.next()) {
+            while(row.next())
+            {
                 Transaction transaction = mapRow(row);
-    
+                
                 deposits.add(transaction);
             }
         }
@@ -104,13 +106,37 @@ public class TransactionDao implements TransactionInt
         {
             e.printStackTrace();
         }
-    
+        
         return deposits;
     }
     
     @Override
     public Transaction getOneTransaction(int id)
     {
+        String sql = "SELECT * " +
+                " FROM transactions " +
+                " WHERE transaction_id = ?";
+        
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        )
+        {
+            statement.setInt(1, id);
+            
+            try(ResultSet row = statement.executeQuery();)
+            {
+                if(row.next())
+                {
+                    return mapRow(row);
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        
         return null;
     }
     
