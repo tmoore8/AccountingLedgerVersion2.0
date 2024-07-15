@@ -14,6 +14,8 @@ public class Transaction {
     private String vendor;
     private float amount;
     
+    // Add a new constructor
+    
     public Transaction(int id, LocalDate date, LocalTime time, String description, String vendor, float amount) {
         this.id = id;
         this.date = date;
