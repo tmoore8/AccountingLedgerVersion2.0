@@ -8,10 +8,10 @@ public interface TransactionInt {
     List<Transaction> getAllTransactions();
     List<Transaction> getAllPayments();
     List<Transaction> getAllDeposits();
-    Transaction getOneTransaction(int id);
+    Transaction getTransactionById(int id);
     Transaction create(Transaction transaction, boolean isPayment, boolean isDeposit);
-    void update(int id, Transaction transaction);
-    void delete(int id);
+    Transaction update(int id, Transaction transaction);
+    Transaction delete(int id);
     
     // Add methods for filtering Transactions by a criteria (date, vendor, etc.)
 }
