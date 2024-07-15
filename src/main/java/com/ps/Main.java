@@ -188,7 +188,9 @@ public class Main {
 
     // method to receive deposit inputs
     private static void addDeposit(Scanner scanner, Ledger ledger) {
-
+        boolean isPayment = false; // use for transactionDao.create()
+        boolean isDeposit = true; // use for transactionDao.create()
+        
         LocalDate date = LocalDate.now();
 
         LocalTime time = LocalTime.now();
@@ -210,7 +212,9 @@ public class Main {
 
     //method to receive payment inputs
     private static void makePayment(Scanner scanner, Ledger ledger) {
-
+        boolean isPayment = true; // use for transactionDao.create()
+        boolean isDeposit = false; // use for transactionDao.create()
+        
         LocalDate date = LocalDate.now();
 
         LocalTime time = LocalTime.now();
