@@ -12,6 +12,4 @@ public interface TransactionInt {
     Transaction create(Transaction transaction, boolean isPayment, boolean isDeposit);
     Transaction update(int id, Transaction transaction);
     Transaction delete(int id);
-    
-    // Add methods for filtering Transactions by a criteria (date, vendor, etc.)
 }
