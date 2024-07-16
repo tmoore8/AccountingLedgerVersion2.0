@@ -3,6 +3,8 @@ package com.ps;
 import com.ps.DAOs.TransactionDao;
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -64,8 +66,8 @@ public class Main {
         System.out.println("\nLedger: ");
         int ledgerCommand;
         do {
-            System.out.println("\n\t1) Display all entries: ");
-            System.out.println("\t2) Display deposits;");
+            System.out.println("\n\t1) Display all entries");
+            System.out.println("\t2) Display deposits");
             System.out.println("\t3) Display Payments");
             System.out.println("\t4) Reports Menu");
             System.out.println("\t5) Back");
@@ -129,7 +131,7 @@ public class Main {
                     break;
                 case 3:
                     List<Transaction> yearToDateTransactions = transactionDao.yearToDate();
-
+                    
                     displayTransactions(yearToDateTransactions);
                     break;
                 case 4:
@@ -219,10 +221,10 @@ public class Main {
     }
     
     // method to receive deposit inputs
-    private static String[] addDeposit(Scanner scanner) {
-        boolean isPayment = false; // use for transactionDao.create()
-        boolean isDeposit = true; // use for transactionDao.create()
-    
+    private static void addDeposit(Scanner scanner) {
+        boolean isPayment = false;
+        boolean isDeposit = true;
+        
         scanner.nextLine(); // consumes new line
         System.out.print("Enter the description of your deposit: ");
         String description = scanner.nextLine();
@@ -234,23 +236,28 @@ public class Main {
         System.out.print("Enter the dollar amount: $");
         
         // checks to see if the user put a double value or not.
-        if(scanner.hasNextDouble()) {
-            double dollarAmount = scanner.nextDouble();
+        if(scanner.hasNextFloat()) {
+            float dollarAmount = scanner.nextFloat();
             scanner.nextLine();
             
-            return new String[]{description, vendor, Double.toString(dollarAmount)};
+            LocalDateTime     dateTime  = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String            date      = dateTime.format(formatter);
+            
+            Transaction deposit = new Transaction(date, description, vendor, dollarAmount);
+            
+            System.out.println(transactionDao.create(deposit, isPayment, isDeposit));
         } else {
             scanner.nextLine();
             System.out.println("\nYou have entered an incorrect input type. Please try again.");
-            return null;
         }
     }
     
     //method to receive payment inputs
-    private static String[] makePayment(Scanner scanner) {
-        boolean isPayment = true; // use for transactionDao.create()
-        boolean isDeposit = false; // use for transactionDao.create()
-    
+    private static void makePayment(Scanner scanner) {
+        boolean isPayment = true;
+        boolean isDeposit = false;
+        
         scanner.nextLine(); // consumes new line
         System.out.print("Enter the description of your payment: ");
         String description = scanner.nextLine();
@@ -261,23 +268,28 @@ public class Main {
         
         System.out.print("Enter the dollar amount: $");
         
-        // checks to see if the user put a double value or not.
-        if(scanner.hasNextDouble()) {
-            double dollarAmount = scanner.nextDouble();
+        // checks to see if the user put a float value or not.
+        if(scanner.hasNextFloat()) {
+            float dollarAmount = scanner.nextFloat();
             scanner.nextLine();
             
-            return new String[]{description, vendor, Double.toString(dollarAmount)};
+            LocalDateTime     dateTime  = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String            date      = dateTime.format(formatter);
+            
+            Transaction payment = new Transaction(date, description, vendor, dollarAmount);
+            
+            System.out.println(transactionDao.create(payment, isPayment, isDeposit));
         } else {
             scanner.nextLine();
             System.out.println("\nYou have entered an incorrect input type. Please try again.");
-            return null;
         }
     }
     
     public static void displayTransactions(List<Transaction> transactions) {
         
         System.out.println("\n****************************************  Transactions  *********************************************");
-        System.out.println("Date           Description                    Vendor               Amount");
+        System.out.println("Date           Time          Description                    Vendor               Amount");
         System.out.println("------------------------------------------------------------------------------------------------------");
         
         for(Transaction transaction : transactions) {
