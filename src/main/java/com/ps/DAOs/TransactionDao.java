@@ -252,7 +252,7 @@ public class TransactionDao implements TransactionInt {
         
         List<Transaction> transactions = new ArrayList<>();
         
-        String dateQuery = "SELECT * FROM transactions WHERE date LIKE '%?%' ORDER BY date DESC;";
+        String dateQuery = "SELECT * FROM transactions WHERE date LIKE ? ORDER BY date DESC;";
         
         try(
                 Connection connection = basicDataSource.getConnection();
@@ -280,7 +280,7 @@ public class TransactionDao implements TransactionInt {
         
         List<Transaction> transactions = new ArrayList<>();
         
-        String dateQuery = "SELECT * FROM transactions WHERE date BETWEEN '?' AND '?' ORDER BY date DESC;";
+        String dateQuery = "SELECT * FROM transactions WHERE date BETWEEN ? AND ? ORDER BY date DESC;";
         
         try(
                 Connection connection = basicDataSource.getConnection();
@@ -309,7 +309,7 @@ public class TransactionDao implements TransactionInt {
         
         List<Transaction> transactions = new ArrayList<>();
         
-        String dateQuery = "SELECT * FROM transactions WHERE description LIKE '?' ORDER BY date DESC;";
+        String dateQuery = "SELECT * FROM transactions WHERE description LIKE ? ORDER BY date DESC;";
         
         try(
                 Connection connection = basicDataSource.getConnection();
@@ -337,7 +337,7 @@ public class TransactionDao implements TransactionInt {
         
         List<Transaction> transactions = new ArrayList<>();
         
-        String dateQuery = "SELECT * FROM transactions WHERE vendor LIKE '?' ORDER BY date DESC;";
+        String dateQuery = "SELECT * FROM transactions WHERE vendor LIKE ? ORDER BY date DESC;";
         
         try(
                 Connection connection = basicDataSource.getConnection();
