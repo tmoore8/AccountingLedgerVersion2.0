@@ -3,34 +3,31 @@ package com.ps;
 import com.ps.DAOs.TransactionDao;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     private static TransactionDao transactionDao;
-
+    
     public static void main(String[] args) {
         display(args);
     }
-    public static void init(String[] args){
+    
+    public static void init(String[] args) {
         BasicDataSource basicDataSource = new BasicDataSource();
         basicDataSource.setUrl("jdbc:mysql://localhost:3306/AccountingLedger");
         basicDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         basicDataSource.setUsername(args[0]);
         basicDataSource.setPassword(args[1]);
-
+        
         transactionDao = new TransactionDao(basicDataSource);
-
+        
     }
-    public static void display(String[] args){
+    
+    public static void display(String[] args) {
         init(args);
         Scanner scanner = new Scanner(System.in);
-        Ledger ledger = new Ledger();
-        int userIn;
+        int     userIn;
         do {
             System.out.println("\nWelcome to HAMM Accounting. Please select an option: ");
             System.out.println("\n\t1) Add deposit");
@@ -38,8 +35,8 @@ public class Main {
             System.out.println("\t3) Display Ledger");
             System.out.println("\t4) Exit");
             userIn = scanner.nextInt();
-
-            switch (userIn) {
+            
+            switch(userIn) {
                 case 1:
                     //Add a deposit prompt the user for a deposit information and save it to CSV
                     addDeposit(scanner);
@@ -50,7 +47,7 @@ public class Main {
                     break;
                 case 3:
                     //display ledger menu
-                    displayLedgerMenu(scanner, ledger);
+                    displayLedgerMenu(scanner);
                     break;
                 case 4:
                     System.out.println("Thank you for banking with us.");
@@ -58,12 +55,12 @@ public class Main {
                 default:
                     System.out.println("Command not found.");
             }
-        } while (userIn != 4);
+        } while(userIn != 4);
     }
-
-
+    
+    
     //method to display ledger menu
-    private static void displayLedgerMenu(Scanner scanner, Ledger ledger) {
+    private static void displayLedgerMenu(Scanner scanner) {
         System.out.println("\nLedger: ");
         int ledgerCommand;
         do {
@@ -74,7 +71,7 @@ public class Main {
             System.out.println("\t5) Back");
             ledgerCommand = scanner.nextInt();
             scanner.nextLine();//consume new line
-            switch (ledgerCommand) {
+            switch(ledgerCommand) {
                 case 1:
                     //display all entries
                     List<Transaction> allTransactions = transactionDao.getAllTransactions();
@@ -92,25 +89,25 @@ public class Main {
                     break;
                 case 4:
                     //reports menu
-                    displayReportsMenu(scanner, ledger);
+                    displayReportsMenu(scanner);
                     break;
                 case 5:
                     break;
                 default:
                     System.out.println("Invalid option.");
-
+                
             }
-        } while (ledgerCommand != 5);
-
+        } while(ledgerCommand != 5);
+        
     }
-
+    
     //method to display reports menu
-    private static void displayReportsMenu(Scanner scanner, Ledger ledger) {
+    private static void displayReportsMenu(Scanner scanner) {
         int reportCommand;
         do {
             System.out.println("\nSearch Reports by: ");
-            System.out.println("\n\t1) Month to Date: ");
-            System.out.println("\t2) Previous Month;");
+            System.out.println("\n\t1) Month to Date");
+            System.out.println("\t2) Previous Month");
             System.out.println("\t3) Year to Date");
             System.out.println("\t4) Previous Year");
             System.out.println("\t5) Vendor");
@@ -118,147 +115,129 @@ public class Main {
             System.out.println("\t7) Back");
             reportCommand = scanner.nextInt();
             scanner.nextLine();//consume new line;
-
-            switch (reportCommand) {
+            
+            switch(reportCommand) {
                 case 1:
-                    //month to date
-                    LocalDate currentDate = LocalDate.now();
-                    LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
-                    LocalDate lastDayOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth());
-
-                    ArrayList<Transaction> monthToDateTransactions = ledger.filterTransactionsByDateRange(firstDayOfMonth, lastDayOfMonth);
-
+                    List<Transaction> monthToDateTransactions = transactionDao.monthToDate();
+                    
                     displayTransactions(monthToDateTransactions);
                     break;
                 case 2:
-                    // previous month
-                    LocalDate previousMonthFirstDay = LocalDate.now().minusMonths(1).withDayOfMonth(1);
-                    LocalDate previousMonthLastDay = previousMonthFirstDay.withDayOfMonth(previousMonthFirstDay.lengthOfMonth());
-
-                    ArrayList<Transaction> previousMonthTransactions = ledger.filterTransactionsByDateRange(previousMonthFirstDay, previousMonthLastDay);
-
+                    List<Transaction> previousMonthTransactions = transactionDao.previousMonth();
+                    
                     displayTransactions(previousMonthTransactions);
                     break;
                 case 3:
-                    //year to date
-                    LocalDate currentYearFirstDay = LocalDate.now().withDayOfYear(1);
-                    LocalDate currentYearLastDay = LocalDate.now().plusYears(1).withDayOfYear(1).minusDays(1);
-
-                    ArrayList<Transaction> yearToDateTransactions = ledger.filterTransactionsByDateRange(currentYearFirstDay, currentYearLastDay);
+                    List<Transaction> yearToDateTransactions = transactionDao.yearToDate();
 
                     displayTransactions(yearToDateTransactions);
                     break;
                 case 4:
-                    LocalDate previousYearFirstDay = LocalDate.now().minusYears(1).withDayOfYear(1);
-                    LocalDate previousYearLastDay = LocalDate.now().withDayOfYear(1).minusDays(1);
-
-                    ArrayList<Transaction> previousYearTransactions = ledger.filterTransactionsByDateRange(previousYearFirstDay, previousYearLastDay);
-
+                    List<Transaction> previousYearTransactions = transactionDao.previousYear();
+                    
                     displayTransactions(previousYearTransactions);
-                    //previous year
                     break;
                 case 5:
                     System.out.println("Enter vendor name: ");
-
+                    
                     String vendorName = scanner.nextLine();
                     List<Transaction> vendorTransactions = transactionDao.searchByVendor(vendorName);
-                    if (vendorTransactions.isEmpty()) {
+                    if(vendorTransactions.isEmpty()) {
                         System.out.println("No transactions for vendor: " + vendorName);
                     } else {
                         displayTransactions(vendorTransactions);
                     }
                     break;
                 case 6:
-
-                        System.out.println("Enter start date (yyyy-MM-dd): ");
-                        String startDateInput = scanner.nextLine().trim();
-
-                        System.out.println("Enter end date (yyyy-MM-dd): ");
-                        String endDateInput = scanner.nextLine().trim();
-
-                            if(!startDateInput.isEmpty() && endDateInput.isEmpty()) {
-
-                                List<Transaction> startDateList = transactionDao.searchByOneDate(startDateInput);
-
-                                displayTransactions(startDateList);
-                                break;
-
-                            } else if(startDateInput.isEmpty() && !endDateInput.isEmpty()) {
-
-                                List<Transaction> endDateList = transactionDao.searchByOneDate(endDateInput);
-
-                                displayTransactions(endDateList);
-                                break;
-
-                            } else if (!startDateInput.isEmpty() && !endDateInput.isEmpty()) {
-
-                                List<Transaction> bothDatesList = transactionDao.searchByDates(startDateInput, endDateInput);
-
-                                displayTransactions(bothDatesList);
-                                break;
-                            }
-
-                        System.out.println("Enter description: ");
-                        String descriptionCustomSearch = scanner.nextLine().trim();
-
-                            if (!descriptionCustomSearch.isEmpty()) {
-
-                                List<Transaction> descriptionList = transactionDao.searchByDescription(descriptionCustomSearch);
-                                displayTransactions(descriptionList);
-                                break;
-                            }
-
-                        System.out.println("Enter vendor name: ");
-                        String vendorCustomSearch = scanner.nextLine().trim();
-
-                            if (!vendorCustomSearch.isEmpty()) {
-
-                                List<Transaction> vendorList = transactionDao.searchByVendor(vendorCustomSearch);
-                                displayTransactions(vendorList);
-                                break;
-                            }
-
-                        System.out.println("Enter amount: ");
-                        Float amountCustomSearch = scanner.nextFloat();
-                        scanner.nextLine();
-                            if (amountCustomSearch != null) {
-
-                                List<Transaction> amountList = transactionDao.searchByAmount(amountCustomSearch);
-                                displayTransactions(amountList);
-                                break;
-                            }
+                    
+                    System.out.println("Enter start date (yyyy-MM-dd): ");
+                    String startDateInput = scanner.nextLine().trim();
+                    
+                    System.out.println("Enter end date (yyyy-MM-dd): ");
+                    String endDateInput = scanner.nextLine().trim();
+                    
+                    if(!startDateInput.isEmpty() && endDateInput.isEmpty()) {
+                        
+                        List<Transaction> startDateList = transactionDao.searchByOneDate(startDateInput);
+                        
+                        displayTransactions(startDateList);
+                        break;
+                        
+                    } else if(startDateInput.isEmpty() && !endDateInput.isEmpty()) {
+                        
+                        List<Transaction> endDateList = transactionDao.searchByOneDate(endDateInput);
+                        
+                        displayTransactions(endDateList);
+                        break;
+                        
+                    } else if(!startDateInput.isEmpty() && !endDateInput.isEmpty()) {
+                        
+                        List<Transaction> bothDatesList = transactionDao.searchByDates(startDateInput, endDateInput);
+                        
+                        displayTransactions(bothDatesList);
+                        break;
+                    }
+                    
+                    System.out.println("Enter description: ");
+                    String descriptionCustomSearch = scanner.nextLine().trim();
+                    
+                    if(!descriptionCustomSearch.isEmpty()) {
+                        
+                        List<Transaction> descriptionList = transactionDao.searchByDescription(descriptionCustomSearch);
+                        displayTransactions(descriptionList);
+                        break;
+                    }
+                    
+                    System.out.println("Enter vendor name: ");
+                    String vendorCustomSearch = scanner.nextLine().trim();
+                    
+                    if(!vendorCustomSearch.isEmpty()) {
+                        
+                        List<Transaction> vendorList = transactionDao.searchByVendor(vendorCustomSearch);
+                        displayTransactions(vendorList);
+                        break;
+                    }
+                    
+                    System.out.println("Enter amount: ");
+                    Float amountCustomSearch = scanner.nextFloat();
+                    scanner.nextLine();
+                    if(amountCustomSearch != null) {
+                        
+                        List<Transaction> amountList = transactionDao.searchByAmount(amountCustomSearch);
+                        displayTransactions(amountList);
+                        break;
+                    }
                     break;
-
+                
                 case 7:
                     break;
                 default:
                     System.out.println("Invalid option.");
-
+                
             }
-        } while (reportCommand != 7);
+        } while(reportCommand != 7);
     }
-
+    
     // method to receive deposit inputs
     private static String[] addDeposit(Scanner scanner) {
-
-
         boolean isPayment = false; // use for transactionDao.create()
         boolean isDeposit = true; // use for transactionDao.create()
-
+    
+        scanner.nextLine(); // consumes new line
         System.out.print("Enter the description of your deposit: ");
         String description = scanner.nextLine();
-
-
+        
+        
         System.out.print("Enter the vendor: ");
         String vendor = scanner.nextLine();
-
+        
         System.out.print("Enter the dollar amount: $");
-
+        
         // checks to see if the user put a double value or not.
-        if (scanner.hasNextDouble()) {
+        if(scanner.hasNextDouble()) {
             double dollarAmount = scanner.nextDouble();
             scanner.nextLine();
-
+            
             return new String[]{description, vendor, Double.toString(dollarAmount)};
         } else {
             scanner.nextLine();
@@ -266,27 +245,27 @@ public class Main {
             return null;
         }
     }
-
+    
     //method to receive payment inputs
     private static String[] makePayment(Scanner scanner) {
-
         boolean isPayment = true; // use for transactionDao.create()
         boolean isDeposit = false; // use for transactionDao.create()
-
+    
+        scanner.nextLine(); // consumes new line
         System.out.print("Enter the description of your payment: ");
         String description = scanner.nextLine();
-
-
+        
+        
         System.out.print("Enter the vendor: ");
         String vendor = scanner.nextLine();
-
+        
         System.out.print("Enter the dollar amount: $");
-
+        
         // checks to see if the user put a double value or not.
-        if (scanner.hasNextDouble()) {
+        if(scanner.hasNextDouble()) {
             double dollarAmount = scanner.nextDouble();
             scanner.nextLine();
-
+            
             return new String[]{description, vendor, Double.toString(dollarAmount)};
         } else {
             scanner.nextLine();
@@ -294,33 +273,29 @@ public class Main {
             return null;
         }
     }
-
+    
     public static void displayTransactions(List<Transaction> transactions) {
-
+        
         System.out.println("\n****************************************  Transactions  *********************************************");
-        System.out.println("Date           Time          Description                    Vendor               Amount");
+        System.out.println("Date           Description                    Vendor               Amount");
         System.out.println("------------------------------------------------------------------------------------------------------");
-
-        for(Transaction transaction: transactions) {
-
-            String transactionDate = transaction.getDate().toString();
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedDate = transactionDate.formatted(dateFormatter);
-
+        
+        for(Transaction transaction : transactions) {
+            
             System.out.printf("~ %-12s %-30s %-20s %-10.2f\n",
-
-                    formattedDate,
-                    transaction.getDescription(),
-                    transaction.getVendor(),
-                    transaction.getAmount()
-
+            
+                              transaction.getDate(),
+                              transaction.getDescription(),
+                              transaction.getVendor(),
+                              transaction.getAmount()
+            
             );
         }
-
+        
         if(transactions.isEmpty()) {
             System.out.println("\n No transactions founds");
         }
-
+        
     }
 }
 
