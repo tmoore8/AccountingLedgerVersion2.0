@@ -275,7 +275,10 @@ public class UserInterface {
             String            date      = dateTime.format(formatter);
             
             Transaction deposit = new Transaction(date, description, vendor, dollarAmount);
-            
+    
+            System.out.println("\n****************************************  Transactions  *********************************************");
+            System.out.println("Date           Time          Description                    Vendor               Amount");
+            System.out.println("------------------------------------------------------------------------------------------------------");
             System.out.println(transactionDao.create(deposit, isPayment, isDeposit));
         } else {
             scanner.nextLine();
@@ -310,7 +313,10 @@ public class UserInterface {
             String            date      = dateTime.format(formatter);
             
             Transaction payment = new Transaction(date, description, vendor, dollarAmount);
-            
+    
+            System.out.println("\n****************************************  Transactions  *********************************************");
+            System.out.println("Date           Time          Description                    Vendor               Amount");
+            System.out.println("------------------------------------------------------------------------------------------------------");
             System.out.println(transactionDao.create(payment, isPayment, isDeposit));
         } else {
             scanner.nextLine();
