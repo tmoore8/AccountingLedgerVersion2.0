@@ -19,7 +19,8 @@ public class TransactionDao implements TransactionInt {
     public List<Transaction> getAllTransactions() {
         List<Transaction> transactions = new ArrayList<>();
         
-        String sql = "SELECT * FROM transactions";
+        String sql = "SELECT * FROM transactions " +
+                " ORDER BY DESC";
         
         try(
                 Connection connection = basicDataSource.getConnection();
@@ -46,7 +47,8 @@ public class TransactionDao implements TransactionInt {
         String sql = "SELECT p.*, date, description, vendor, amount " +
                 " FROM payments AS p " +
                 " JOIN transactions AS t " +
-                "   ON p.transaction_id = t.transaction_id";
+                "   ON p.transaction_id = t.transaction_id " +
+                " ORDER BY DESC";
         
         try(
                 Connection connection = basicDataSource.getConnection();
@@ -73,7 +75,8 @@ public class TransactionDao implements TransactionInt {
         String sql = "SELECT d.*, date, description, vendor, amount " +
                 " FROM deposits AS d " +
                 " JOIN transactions AS t " +
-                "   ON d.transaction_id = t.transaction_id";
+                "   ON d.transaction_id = t.transaction_id " +
+                " ORDER BY DESC";
         
         try(
                 Connection connection = basicDataSource.getConnection();
