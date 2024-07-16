@@ -26,6 +26,7 @@ public class UserInterface {
         init(args);
         Scanner scanner = new Scanner(System.in);
         int     userIn;
+        
         do {
             System.out.println("\nWelcome to HAMM Accounting. Please select an option: ");
             System.out.println("\n\t1) Add deposit");
@@ -33,7 +34,7 @@ public class UserInterface {
             System.out.println("\t3) Display Ledger");
             System.out.println("\t4) Exit");
             userIn = scanner.nextInt();
-            
+
             switch(userIn) {
                 case 1:
                     //Add a deposit prompt the user for a deposit information and save it to CSV
@@ -52,6 +53,8 @@ public class UserInterface {
                     break;
                 default:
                     System.out.println("Command not found.");
+        
+                    
             }
         } while(userIn != 4);
     }
@@ -74,16 +77,22 @@ public class UserInterface {
                     //display all entries
                     List<Transaction> allTransactions = transactionDao.getAllTransactions();
                     displayTransactions(allTransactions);
+                    
+                    
                     break;
                 case 2:
                     // display deposits
                     List<Transaction> onlyDepositsTransactions = transactionDao.getAllDeposits();
                     displayTransactions(onlyDepositsTransactions);
+                    
+                    
                     break;
                 case 3:
                     //display payments
                     List<Transaction> onlyPaymentsTransactions = transactionDao.getAllPayments();
                     displayTransactions(onlyPaymentsTransactions);
+                    
+                    
                     break;
                 case 4:
                     //reports menu
@@ -93,7 +102,8 @@ public class UserInterface {
                     break;
                 default:
                     System.out.println("Invalid option.");
-                
+                    
+                    
             }
         } while(ledgerCommand != 5);
         
@@ -119,21 +129,29 @@ public class UserInterface {
                     List<Transaction> monthToDateTransactions = transactionDao.monthToDate();
                     
                     displayTransactions(monthToDateTransactions);
+                    
+                    
                     break;
                 case 2:
                     List<Transaction> previousMonthTransactions = transactionDao.previousMonth();
                     
                     displayTransactions(previousMonthTransactions);
+                    
+                    
                     break;
                 case 3:
                     List<Transaction> yearToDateTransactions = transactionDao.yearToDate();
                     
                     displayTransactions(yearToDateTransactions);
+                    
+                    
                     break;
                 case 4:
                     List<Transaction> previousYearTransactions = transactionDao.previousYear();
                     
                     displayTransactions(previousYearTransactions);
+                    
+                    
                     break;
                 case 5:
                     System.out.println("Enter vendor name: ");
@@ -145,6 +163,8 @@ public class UserInterface {
                     } else {
                         displayTransactions(vendorTransactions);
                     }
+                    
+                    
                     break;
                 case 6:
                     
@@ -159,6 +179,8 @@ public class UserInterface {
                         List<Transaction> startDateList = transactionDao.searchByOneDate(startDateInput);
                         
                         displayTransactions(startDateList);
+                        
+                        
                         break;
                         
                     } else if(startDateInput.isEmpty() && !endDateInput.isEmpty()) {
@@ -166,6 +188,8 @@ public class UserInterface {
                         List<Transaction> endDateList = transactionDao.searchByOneDate(endDateInput);
                         
                         displayTransactions(endDateList);
+                        
+                        
                         break;
                         
                     } else if(!startDateInput.isEmpty() && !endDateInput.isEmpty()) {
@@ -173,6 +197,8 @@ public class UserInterface {
                         List<Transaction> bothDatesList = transactionDao.searchByDates(startDateInput, endDateInput);
                         
                         displayTransactions(bothDatesList);
+                        
+                        
                         break;
                     }
                     
@@ -183,6 +209,8 @@ public class UserInterface {
                         
                         List<Transaction> descriptionList = transactionDao.searchByDescription(descriptionCustomSearch);
                         displayTransactions(descriptionList);
+                        
+                        
                         break;
                     }
                     
@@ -193,6 +221,8 @@ public class UserInterface {
                         
                         List<Transaction> vendorList = transactionDao.searchByVendor(vendorCustomSearch);
                         displayTransactions(vendorList);
+                        
+                        
                         break;
                     }
                     
@@ -203,15 +233,19 @@ public class UserInterface {
                         
                         List<Transaction> amountList = transactionDao.searchByAmount(amountCustomSearch);
                         displayTransactions(amountList);
+                        
+                        
                         break;
                     }
+                    
+                    
                     break;
-                
                 case 7:
                     break;
                 default:
                     System.out.println("Invalid option.");
-                
+                    
+                    
             }
         } while(reportCommand != 7);
     }
@@ -247,6 +281,8 @@ public class UserInterface {
             scanner.nextLine();
             System.out.println("\nYou have entered an incorrect input type. Please try again.");
         }
+        
+        
     }
     
     //method to receive payment inputs
@@ -280,6 +316,8 @@ public class UserInterface {
             scanner.nextLine();
             System.out.println("\nYou have entered an incorrect input type. Please try again.");
         }
+        
+        
     }
     
     public static void displayTransactions(List<Transaction> transactions) {
@@ -303,21 +341,6 @@ public class UserInterface {
         if(transactions.isEmpty()) {
             System.out.println("\n No transactions founds");
         }
-        
-    }
-    
-    private static void backButton(Scanner scanner) {
-        String backButton;
-        
-        do {
-            System.out.println("\nEnter B  to leave page:");
-            backButton = scanner.next();
-            if (backButton.equalsIgnoreCase("B")) {
-                break;
-            } else {
-                System.out.println("\nERROR: Must type B and press 'Enter' to leave page.");
-            }
-        } while (!backButton.equalsIgnoreCase("B"));
         
     }
 }
