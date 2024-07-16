@@ -386,13 +386,13 @@ public class TransactionDao implements TransactionInt {
         
     }
     
-    // monthToDate()
     public List<Transaction> monthToDate() {
         List<Transaction> filteredTransactions = new ArrayList<>();
         
         String sql = "SELECT * FROM transactions " +
                 " WHERE (EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)) " +
-                "   AND (EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM CURRENT_TIMESTAMP)) ";
+                "   AND (EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM CURRENT_TIMESTAMP)) " +
+                " ORDER BY date DESC";
         
         try(
                 Connection connection = basicDataSource.getConnection();
@@ -412,10 +412,84 @@ public class TransactionDao implements TransactionInt {
         return filteredTransactions;
     }
     
-    // previousMonth()
-    // yearToDate()
-    // previousYear()
-    // searchByVendor()
+    public List<Transaction> previousMonth() {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+        
+        String sql = "SELECT * " +
+                " FROM transactions " +
+                " WHERE date >= DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m-01') " +
+                "   AND date < DATE_FORMAT(CURDATE(), '%Y-%m-01')" +
+                " ORDER BY date DESC";
+        
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ResultSet row = ps.executeQuery();
+        ) {
+            while(row.next()) {
+                Transaction transaction = mapRow(row);
+                
+                filteredTransactions.add(transaction);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return filteredTransactions;
+    }
+    
+    public List<Transaction> yearToDate() {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+        
+        String sql = "SELECT * FROM transactions " +
+                " WHERE (EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)) " +
+                " ORDER BY date DESC";
+        
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ResultSet row = ps.executeQuery();
+        ) {
+            while(row.next()) {
+                Transaction transaction = mapRow(row);
+                
+                filteredTransactions.add(transaction);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return filteredTransactions;
+    }
+    
+    public List<Transaction> previousYear() {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+        
+        String sql = "SELECT * " +
+                " FROM transactions " +
+                " WHERE date >= DATE_FORMAT(CURDATE() - INTERVAL 1 YEAR, '%Y-01-01') " +
+                "   AND date < DATE_FORMAT(CURDATE(), '%Y-01-01')" +
+                " ORDER BY date DESC";
+        
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ResultSet row = ps.executeQuery();
+        ) {
+            while(row.next()) {
+                Transaction transaction = mapRow(row);
+                
+                filteredTransactions.add(transaction);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return filteredTransactions;
+    }
     
     private Transaction mapRow(ResultSet row) throws SQLException {
         int    id          = row.getInt("transaction_id");
