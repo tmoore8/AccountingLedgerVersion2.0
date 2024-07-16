@@ -119,6 +119,17 @@ From the Reports menu you can display reports containing all transactions within
 
 ### Hibba's Code
 
+One piece of code that I found interesting was within the makePayment method. This piece of code checks to see if the user inputs the correct data type. If they do, the program continues, but if they not, instead of the program crashing, they are asked to try again.
+
+><details>
+><summary> Make Payment Code </summary>
+>
+> <img width="1055" alt="Screenshot 2024-07-16 at 7 40 23 PM" src="https://github.com/user-attachments/assets/5d79614c-705c-49b9-aeda-58621fec5b3f">
+
+></details>
+
+
+
 ### Marshall's Code
 
 ### Tristan's Code
