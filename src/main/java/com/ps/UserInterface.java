@@ -34,7 +34,7 @@ public class UserInterface {
             System.out.println("\t3) Display Ledger");
             System.out.println("\t4) Exit");
             userIn = scanner.nextInt();
-
+            
             switch(userIn) {
                 case 1:
                     //Add a deposit prompt the user for a deposit information and save it to CSV
@@ -53,8 +53,8 @@ public class UserInterface {
                     break;
                 default:
                     System.out.println("Command not found.");
-        
-                    
+                
+                
             }
         } while(userIn != 4);
     }
@@ -102,8 +102,8 @@ public class UserInterface {
                     break;
                 default:
                     System.out.println("Invalid option.");
-                    
-                    
+                
+                
             }
         } while(ledgerCommand != 5);
         
@@ -170,7 +170,7 @@ public class UserInterface {
                     
                     System.out.println("Enter start date (yyyy-MM-dd): ");
                     String startDateInput = scanner.nextLine().trim();
-
+                    
                     System.out.println("Enter end date (yyyy-MM-dd): ");
                     String endDateInput = scanner.nextLine().trim();
                     
@@ -179,20 +179,20 @@ public class UserInterface {
                     
                     System.out.println("Enter vendor name: ");
                     String vendorCustomSearch = scanner.nextLine().trim();
-
+                    
                     System.out.println("Enter amount: ");
                     String amountInput = scanner.nextLine().trim();
-                        float amountCustomSearch = Float.parseFloat(amountInput);
-
-                        List<Transaction> amountList = transactionDao.search(startDateInput,endDateInput,descriptionCustomSearch,vendorCustomSearch,amountCustomSearch);
-                        displayTransactions(amountList);
+                    float amountCustomSearch = Float.parseFloat(amountInput);
+                    
+                    List<Transaction> amountList = transactionDao.search(startDateInput, endDateInput, descriptionCustomSearch, vendorCustomSearch, amountCustomSearch);
+                    displayTransactions(amountList);
                     break;
                 case 7:
                     break;
                 default:
                     System.out.println("Invalid option.");
-                    
-                    
+                
+                
             }
         } while(reportCommand != 7);
     }
@@ -222,7 +222,7 @@ public class UserInterface {
             String            date      = dateTime.format(formatter);
             
             Transaction deposit = new Transaction(date, description, vendor, dollarAmount);
-    
+            
             System.out.println("\n****************************************  Transactions  *********************************************");
             System.out.println("Date           Time          Description                    Vendor               Amount");
             System.out.println("------------------------------------------------------------------------------------------------------");
@@ -260,7 +260,7 @@ public class UserInterface {
             String            date      = dateTime.format(formatter);
             
             Transaction payment = new Transaction(date, description, vendor, dollarAmount);
-    
+            
             System.out.println("\n****************************************  Transactions  *********************************************");
             System.out.println("Date           Time          Description                    Vendor               Amount");
             System.out.println("------------------------------------------------------------------------------------------------------");
