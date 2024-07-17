@@ -170,75 +170,22 @@ public class UserInterface {
                     
                     System.out.println("Enter start date (yyyy-MM-dd): ");
                     String startDateInput = scanner.nextLine().trim();
-                    
+
                     System.out.println("Enter end date (yyyy-MM-dd): ");
                     String endDateInput = scanner.nextLine().trim();
-                    
-                    if(!startDateInput.isEmpty() && endDateInput.isEmpty()) {
-                        
-                        List<Transaction> startDateList = transactionDao.searchByOneDate(startDateInput);
-                        
-                        displayTransactions(startDateList);
-                        
-                        
-                        break;
-                        
-                    } else if(startDateInput.isEmpty() && !endDateInput.isEmpty()) {
-                        
-                        List<Transaction> endDateList = transactionDao.searchByOneDate(endDateInput);
-                        
-                        displayTransactions(endDateList);
-                        
-                        
-                        break;
-                        
-                    } else if(!startDateInput.isEmpty() && !endDateInput.isEmpty()) {
-                        
-                        List<Transaction> bothDatesList = transactionDao.searchByDates(startDateInput, endDateInput);
-                        
-                        displayTransactions(bothDatesList);
-                        
-                        
-                        break;
-                    }
                     
                     System.out.println("Enter description: ");
                     String descriptionCustomSearch = scanner.nextLine().trim();
                     
-                    if(!descriptionCustomSearch.isEmpty()) {
-                        
-                        List<Transaction> descriptionList = transactionDao.searchByDescription(descriptionCustomSearch);
-                        displayTransactions(descriptionList);
-                        
-                        
-                        break;
-                    }
-                    
                     System.out.println("Enter vendor name: ");
                     String vendorCustomSearch = scanner.nextLine().trim();
-                    
-                    if(!vendorCustomSearch.isEmpty()) {
-                        
-                        List<Transaction> vendorList = transactionDao.searchByVendor(vendorCustomSearch);
-                        displayTransactions(vendorList);
-                        
-                        
-                        break;
-                    }
-                    
+
                     System.out.println("Enter amount: ");
-                    Float amountCustomSearch = scanner.nextFloat();
-                    scanner.nextLine();
-                    if(amountCustomSearch != null) {
-                        
-                        List<Transaction> amountList = transactionDao.searchByAmount(amountCustomSearch);
+                    String amountInput = scanner.nextLine().trim();
+                        float amountCustomSearch = Float.parseFloat(amountInput);
+
+                        List<Transaction> amountList = transactionDao.search(startDateInput,endDateInput,descriptionCustomSearch,vendorCustomSearch,amountCustomSearch);
                         displayTransactions(amountList);
-                        
-                        
-                        break;
-                    }
-                    
-                    
                     break;
                 case 7:
                     break;
