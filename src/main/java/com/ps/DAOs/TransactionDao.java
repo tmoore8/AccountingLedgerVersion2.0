@@ -4,7 +4,6 @@ import com.ps.Transaction;
 import com.ps.interfaces.TransactionInt;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -253,14 +252,15 @@ public class TransactionDao implements TransactionInt {
         List<Transaction> filteredTransactions = new ArrayList<>();
         
         String sql = "SELECT * FROM transactions " +
-                "WHERE date BETWEEN ? AND ? " +
-                " AND description LIKE ?  " +
-                " AND vendor LIKE ?   " +
-                " AND amount <= ?";
+                " WHERE date BETWEEN ? AND ? " +
+                "   AND description LIKE ?  " +
+                "   AND vendor LIKE ?   " +
+                "   AND amount <= ? " +
+                " ORDER BY date DESC";
         
         
-        startDate = startDate.isBlank() ? "-1" : startDate;
-        endDate = endDate.isBlank() ? "-1" : endDate;
+        startDate = startDate.isBlank() ? getMinDate() : startDate;
+        endDate = endDate.isBlank() ? getMaxDate() : endDate;
         description = description.isBlank() ? "%" : description;
         vendor = vendor.isBlank() ? "%" : vendor;
         amount = amount == 0 ? -1 : amount;
@@ -542,5 +542,47 @@ public class TransactionDao implements TransactionInt {
         float  amount      = row.getFloat("amount");
         
         return new Transaction(id, date, description, vendor, amount);
+    }
+    
+    public String getMaxDate() {
+        String maxDate = "";
+        String sql      = "SELECT MAX(date) FROM transactions";
+        
+        try (
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            
+            try (ResultSet row = ps.executeQuery();) {
+                if (row.next()) {
+                    maxDate = row.getString(1); // there's only one column
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return maxDate;
+    }
+    
+    public String getMinDate() {
+        String minDate = "";
+        String sql      = "SELECT MIN(date) FROM transactions";
+        
+        try (
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            
+            try (ResultSet row = ps.executeQuery();) {
+                if (row.next()) {
+                    minDate = row.getString(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return minDate;
     }
 }
