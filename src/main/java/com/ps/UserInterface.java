@@ -182,10 +182,30 @@ public class UserInterface {
                     
                     System.out.println("Enter amount: ");
                     String amountInput = scanner.nextLine().trim();
-                    float amountCustomSearch = Float.parseFloat(amountInput);
                     
-                    List<Transaction> amountList = transactionDao.search(startDateInput, endDateInput, descriptionCustomSearch, vendorCustomSearch, amountCustomSearch);
-                    displayTransactions(amountList);
+                    if(!amountInput.isBlank()) {
+                        float amountCustomSearch = Float.parseFloat(amountInput);
+                        
+                        List<Transaction> amountList = transactionDao.search(startDateInput, endDateInput, descriptionCustomSearch, vendorCustomSearch, amountCustomSearch);
+                        displayTransactions(amountList);
+                    } else if(
+                            (!startDateInput.isBlank() ||
+                                    !endDateInput.isBlank() ||
+                                    !descriptionCustomSearch.isBlank() ||
+                                    !vendorCustomSearch.isBlank()) &&
+                                    amountInput.isBlank()
+                    ) {
+                        List<Transaction> amountList = transactionDao.search(startDateInput, endDateInput, descriptionCustomSearch, vendorCustomSearch);
+                        displayTransactions(amountList);
+                    } else if(
+                            startDateInput.isBlank() &&
+                                    endDateInput.isBlank() &&
+                                    descriptionCustomSearch.isBlank() &&
+                                    vendorCustomSearch.isBlank() &&
+                                    amountInput.isBlank()
+                    ) {
+                        System.out.println("\n\tNo results found.\n");
+                    }
                     break;
                 case 7:
                     break;
