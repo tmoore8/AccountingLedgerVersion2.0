@@ -288,6 +288,46 @@ public class TransactionDao implements TransactionInt {
         return filteredTransactions;
     }
     
+    public List<Transaction> search(String startDate, String endDate, String description, String vendor) {
+        List<Transaction> filteredTransactions = new ArrayList<>();
+        
+        String sql = "SELECT * FROM transactions " +
+                " WHERE date BETWEEN ? AND ? " +
+                "   AND description LIKE ?  " +
+                "   AND vendor LIKE ?   " +
+                "   AND amount <= ? " +
+                " ORDER BY date DESC";
+        
+        
+        startDate = startDate.isBlank() ? getMinDate() : startDate;
+        endDate = endDate.isBlank() ? getMaxDate() : endDate;
+        description = description.isBlank() ? "%" : description;
+        vendor = vendor.isBlank() ? "%" : vendor;
+        float amount = getMaxAmount();
+        
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, startDate);
+            ps.setString(2, endDate);
+            ps.setString(3, "%" + description + "%");
+            ps.setString(4, "%" + vendor + "%");
+            ps.setFloat(5, amount);
+            try(ResultSet row = ps.executeQuery();) {
+                while(row.next()) {
+                    Transaction transaction = mapRow(row);
+                    filteredTransactions.add(transaction);
+                }
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        
+        return filteredTransactions;
+    }
+    
     public List<Transaction> searchByOneDate(String date) {
         
         List<Transaction> transactions = new ArrayList<>();
@@ -546,19 +586,20 @@ public class TransactionDao implements TransactionInt {
     
     public String getMaxDate() {
         String maxDate = "";
-        String sql      = "SELECT MAX(date) FROM transactions";
+        String sql     = "SELECT MAX(date) FROM transactions";
         
-        try (
+        try(
                 Connection connection = basicDataSource.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
         ) {
             
-            try (ResultSet row = ps.executeQuery();) {
-                if (row.next()) {
+            try(ResultSet row = ps.executeQuery();) {
+                if(row.next()) {
                     maxDate = row.getString(1); // there's only one column
                 }
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -567,22 +608,44 @@ public class TransactionDao implements TransactionInt {
     
     public String getMinDate() {
         String minDate = "";
-        String sql      = "SELECT MIN(date) FROM transactions";
+        String sql     = "SELECT MIN(date) FROM transactions";
         
-        try (
+        try(
                 Connection connection = basicDataSource.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
         ) {
             
-            try (ResultSet row = ps.executeQuery();) {
-                if (row.next()) {
+            try(ResultSet row = ps.executeQuery();) {
+                if(row.next()) {
                     minDate = row.getString(1);
                 }
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
         return minDate;
+    }
+    
+    public Float getMaxAmount() {
+        float  maxAmount = 0;
+        String sql       = "SELECT MAX(amount) FROM transactions";
+        
+        try(
+                Connection connection = basicDataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            try(ResultSet row = ps.executeQuery();) {
+                if(row.next()) {
+                    maxAmount = row.getFloat(1); // there's only one column
+                }
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return maxAmount;
     }
 }
