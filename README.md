@@ -165,11 +165,13 @@ One piece of code that I found interesting was within the makePayment method. Th
 ></details>
 
 ### Tristan's Code
+Two pieces of code I found interesting were the overloaded search() methods. These allowed for proper flow through the menus while allowing variable inputs. Following the pillar of object-oriented programming of Polymorphism.
 
 ><details>
 ><summary> Interesting Code </summary>
 >
-> Image here
+><img width="1026" alt="Search1" src="https://github.com/user-attachments/assets/aea302b5-3733-41ad-818f-a45c50a188d3">
+><img width="999" alt="search2" src="https://github.com/user-attachments/assets/af839875-b6f9-4f2d-9682-d6ecc4364137">
 ></details>
 
 ### Alisha's Interesting Piece of Code
