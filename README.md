@@ -1,12 +1,12 @@
 # Accounting Ledger
 
 ## Table of Contents
-- [Overview]()
-- [Main Menu]()
-- [Ledger Menu]()
-- [Reports Menu]()
-- [Interesting Pieces of Code]()
-- [Contributors]()
+- [Overview](https://github.com/tmoore8/AccountingLedgerVersion2.0?tab=readme-ov-file#overview)
+- [Main Menu](https://github.com/tmoore8/AccountingLedgerVersion2.0?tab=readme-ov-file#main-menu)
+- [Ledger Menu](https://github.com/tmoore8/AccountingLedgerVersion2.0?tab=readme-ov-file#ledger-menu)
+- [Reports Menu](https://github.com/tmoore8/AccountingLedgerVersion2.0?tab=readme-ov-file#reports-menu)
+- [Interesting Pieces of Code](https://github.com/tmoore8/AccountingLedgerVersion2.0?tab=readme-ov-file#interesting-pieces-of-code)
+- [Contributors](https://github.com/tmoore8/AccountingLedgerVersion2.0?tab=readme-ov-file#contributors)
 
 ## Overview
 
@@ -20,21 +20,20 @@ The Accounting Ledger System is a command-line Java application designed to mana
 - Make a deposit (which is reflected as a credit to their accounts)
 - Make a payment (which is reflected as a debit to their accounts)
 - View their accounts ledger
-- Access and manage their financial goals
 - Exit the application
 
 ><details>
 ><summary> Main Menu </summary>
 >
-> ![img.png](src/main/java/com/ps/images/img.png)
+> ![MainMenu.JPG](src/main/java/com/ps/Images/MainMenu.JPG)
 ></details>
 
 #### Adding a deposit
 
 ><details>
-><summary> Deposits </summary>
+><summary> Adding a Deposit </summary>
 >
-> ![img_2.png](src/main/java/com/ps/images/img_2.png)
+> ![AddDeposit.JPG](src/main/java/com/ps/Images/AddDeposit.JPG)
 ></details>
 
 #### Payments
@@ -42,7 +41,7 @@ The Accounting Ledger System is a command-line Java application designed to mana
 ><details>
 ><summary> Making a Payment </summary>
 >
->![img_3.png](src/main/java/com/ps/images/img_3.png)
+> ![MakePayment.JPG](src/main/java/com/ps/Images/MakePayment.JPG)
 ></details>
 
 #### Ledger Screen
@@ -50,7 +49,7 @@ The Accounting Ledger System is a command-line Java application designed to mana
 ><details>
 ><summary> Accessing the Ledger Screen </summary>
 >
-> ![img_4.png](src/main/java/com/ps/images/img_4.png)
+> ![LedgerMenu.JPG](src/main/java/com/ps/Images/LedgerMenu.JPG)
 ></details>
 
 #### Exit Screen
@@ -58,62 +57,91 @@ The Accounting Ledger System is a command-line Java application designed to mana
 ><details>
 ><summary> Exiting the Application </summary>
 >
-> ![img_5.png](src/main/java/com/ps/images/img_5.png)
+> ![ExitScreen.JPG](src/main/java/com/ps/Images/ExitScreen.JPG)
 ></details>
 
 [Back to the Top]()
 
 ### Ledger Menu
-From the Ledger Menu all transactions can be displayed or they can be sorted into deposits (+) or payments (-) or the report menu can be opened
+#### The Ledger Screen is where users are able to:
+- View all the transactions on their account
+- View all deposits made on their account
+- View all their payments made on their account
 
 ><details>
 ><summary> All Transactions </summary>
 >
-> ![img_6.png](src/main/java/com/ps/images/img_6.png)
+> ![LedgerMenu.JPG](src/main/java/com/ps/Images/LedgerMenu.JPG)
 ></details>
 
 ><details>
-><summary> Deposits </summary>
+><summary> All Deposits </summary>
 >
-> ![img_7.png](src/main/java/com/ps/images/img_7.png)
+> ![AllDeposits.JPG](src/main/java/com/ps/Images/AllDeposits.JPG)
 ></details>
 
 ><details>
-><summary> Payments </summary>
+><summary> All Payments </summary>
 >
-> ![img_8.png](src/main/java/com/ps/images/img_8.png)
+> ![AllPayments.JPG](src/main/java/com/ps/Images/AllPayments.JPG)
 ></details>
 
-[Back to the Top]()
+[Back to the Top](https://github.com/tmoore8/AccountingLedgerVersion2.0?tab=readme-ov-file#table-of-contents)
 
 ### Reports Menu
-From the Reports menu you can display reports containing all transactions within a given time period or search by vendor
-
+#### The Reports Screen allows the user to either execute pre-defined reports or conduct a customized search.
+#### These pre-defined reports enable the user to explore their transactions by:
+- Month to Date
+- Previous Month
+- Year to Date
+- Previous Year
+#### The user is also able to:
+- Search by vendor
+- Perform a custom search
+#### All these reports display both the user's deposits and payments.
 ><details>
 ><summary> Reports Menu </summary>
 >
-> ![img_9.png](src/main/java/com/ps/images/img_9.png)
+> ![ReportsMenu.JPG](src/main/java/com/ps/Images/ReportsMenu.JPG)
 ></details>
 
 ><details>
 ><summary> Month to Date </summary>
 >
-> ![img_10.png](src/main/java/com/ps/images/img_10.png)
+> ![MonthToDate.JPG](src/main/java/com/ps/Images/MonthToDate.JPG)
+></details>
+
+><details>
+><summary> Previous Month </summary>
+>
+> ![PreviousMonth.JPG](src/main/java/com/ps/Images/PreviousMonth.JPG)
+></details>
+
+><details>
+><summary> Year to Date </summary>
+>
+> ![YearToDate.JPG](src/main/java/com/ps/Images/YearToDate.JPG)
+></details>
+
+><details>
+><summary> Previous Year </summary>
+>
+> ![PreviousYear.JPG](src/main/java/com/ps/Images/PreviousYear.JPG)
 ></details>
 
 ><details>
 ><summary> Search by Vendor </summary>
 >
-> ![img_11.png](src/main/java/com/ps/images/img_11.png)
+> ![VendorSearch.JPG](src/main/java/com/ps/Images/VendorSearch.JPG)
 ></details>
 
 ><details>
 ><summary> Custom Search </summary>
 >
-> Image here
+> ![CustomSearch.JPG](src/main/java/com/ps/Images/CustomSearch.JPG)
 ></details>
 
-[Back to the Top]()
+[Back to the Top](https://github.com/tmoore8/AccountingLedgerVersion2.0?tab=readme-ov-file#table-of-contents)
 
 ## Interesting Pieces of Code
 
@@ -125,32 +153,23 @@ One piece of code that I found interesting was within the makePayment method. Th
 ><summary> Make Payment Code </summary>
 >
 > <img width="1055" alt="Screenshot 2024-07-16 at 7 40 23 PM" src="https://github.com/user-attachments/assets/5d79614c-705c-49b9-aeda-58621fec5b3f">
-
+>
 ></details>
-
-
 
 ### Marshall's Code
 
+><details>
+><summary> Interesting Code </summary>
+>
+> Image here
+></details>
+
 ### Tristan's Code
-One piece of code I found interesting was for my menus. Instead of using nest do while loops with switches I created methods containing the submenus to keep the code more concise and readable.
 
 ><details>
-><summary> Main Menu Code </summary>
+><summary> Interesting Code </summary>
 >
-> ![img_12.png](src/main/java/com/ps/images/img_12.png)
-></details>
-
-><details>
-><summary> Ledger Menu Code </summary>
->
-> ![img_13.png](src/main/java/com/ps/images/img_13.png)
-></details>
-
-><details>
-><summary> Reports Menu Code </summary>
->
-> ![img_14.png](src/main/java/com/ps/images/img_14.png)
+> Image here
 ></details>
 
 ### Alisha's Interesting Piece of Code
@@ -160,12 +179,12 @@ which helped me display all the transactions throughout the application without 
 I need to show the user their requested transactions.
 
 ><details>
-><summary> Displaying Transactions Helper Method </summary>
+><summary> Display Transactions Helper Method </summary>
 >
-> Image here
+> ![displayTransactionCode.JPG](src/main/java/com/ps/Images/displayTransactionCode.JPG)
 ></details>
 
-[Back to the Top]()
+[Back to the Top](https://github.com/tmoore8/AccountingLedgerVersion2.0?tab=readme-ov-file#table-of-contents)
 
 ## Contributors
 
@@ -185,7 +204,4 @@ I need to show the user their requested transactions.
 
 - [Alisha's Github](https://github.com/alyu15)
 
-[Back to the Top]()
-
-
-
+[Back to the Top](https://github.com/tmoore8/AccountingLedgerVersion2.0?tab=readme-ov-file#table-of-contents)
