@@ -17,6 +17,7 @@ public class TransactionDao implements TransactionInt {
     
     @Override
     public List<Transaction> getAllTransactions() {
+
         List<Transaction> transactions = new ArrayList<>();
         
         String sql = "SELECT * FROM transactions " +
@@ -32,8 +33,7 @@ public class TransactionDao implements TransactionInt {
                 
                 transactions.add(transaction);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -42,6 +42,7 @@ public class TransactionDao implements TransactionInt {
     
     @Override
     public List<Transaction> getAllPayments() {
+
         List<Transaction> payments = new ArrayList<>();
         
         String sql = "SELECT p.*, date, description, vendor, amount " +
@@ -60,8 +61,7 @@ public class TransactionDao implements TransactionInt {
                 
                 payments.add(transaction);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -70,6 +70,7 @@ public class TransactionDao implements TransactionInt {
     
     @Override
     public List<Transaction> getAllDeposits() {
+
         List<Transaction> deposits = new ArrayList<>();
         
         String sql = "SELECT d.*, date, description, vendor, amount " +
@@ -88,8 +89,7 @@ public class TransactionDao implements TransactionInt {
                 
                 deposits.add(transaction);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -98,6 +98,7 @@ public class TransactionDao implements TransactionInt {
     
     @Override
     public Transaction getTransactionById(int id) {
+
         String sql = "SELECT * " +
                 " FROM transactions " +
                 " WHERE transaction_id = ?";
@@ -113,8 +114,7 @@ public class TransactionDao implements TransactionInt {
                     return mapRow(row);
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -123,6 +123,7 @@ public class TransactionDao implements TransactionInt {
     
     @Override
     public Transaction create(Transaction transaction, boolean isPayment, boolean isDeposit) {
+
         Timestamp date = java.sql.Timestamp.valueOf(transaction.getDate());
         
         String transactionSql = "INSERT INTO transactions (date, description, vendor, amount) " +
@@ -170,8 +171,7 @@ public class TransactionDao implements TransactionInt {
                     }
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -180,6 +180,7 @@ public class TransactionDao implements TransactionInt {
     
     @Override
     public Transaction update(int id, Transaction transaction) {
+
         Timestamp date = java.sql.Timestamp.valueOf(transaction.getDate());
         
         String sql = "UPDATE transactions" +
@@ -202,8 +203,7 @@ public class TransactionDao implements TransactionInt {
             ps.executeUpdate();
             
             return getTransactionById(id);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -212,6 +212,7 @@ public class TransactionDao implements TransactionInt {
     
     @Override
     public Transaction delete(int id) {
+
         String transactionSql = "DELETE FROM transactions " +
                 " WHERE transaction_id = ?;";
         
@@ -240,8 +241,7 @@ public class TransactionDao implements TransactionInt {
             depositPs.executeUpdate();
             
             return getTransactionById(id);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -249,6 +249,7 @@ public class TransactionDao implements TransactionInt {
     }
     
     public List<Transaction> search(String startDate, String endDate, String description, String vendor, float amount) {
+
         List<Transaction> filteredTransactions = new ArrayList<>();
         
         String sql = "SELECT * FROM transactions " +
@@ -280,8 +281,7 @@ public class TransactionDao implements TransactionInt {
                     filteredTransactions.add(transaction);
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         
@@ -289,6 +289,7 @@ public class TransactionDao implements TransactionInt {
     }
     
     public List<Transaction> search(String startDate, String endDate, String description, String vendor) {
+
         List<Transaction> filteredTransactions = new ArrayList<>();
         
         String sql = "SELECT * FROM transactions " +
@@ -320,97 +321,11 @@ public class TransactionDao implements TransactionInt {
                     filteredTransactions.add(transaction);
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         
         return filteredTransactions;
-    }
-    
-    public List<Transaction> searchByOneDate(String date) {
-        
-        List<Transaction> transactions = new ArrayList<>();
-        
-        String dateQuery = "SELECT * FROM transactions WHERE date LIKE ? ORDER BY date DESC;";
-        
-        try(
-                Connection connection = basicDataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(dateQuery)
-        ) {
-            preparedStatement.setString(1, date);
-            
-            try(ResultSet row = preparedStatement.executeQuery()) {
-                while(row.next()) {
-                    Transaction transaction = mapRow(row);
-                    
-                    transactions.add(transaction);
-                }
-            }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return transactions;
-        
-    }
-    
-    public List<Transaction> searchByDates(String startDate, String endDate) {
-        
-        List<Transaction> transactions = new ArrayList<>();
-        
-        String dateQuery = "SELECT * FROM transactions WHERE date BETWEEN ? AND ? ORDER BY date DESC;";
-        
-        try(
-                Connection connection = basicDataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(dateQuery)
-        ) {
-            preparedStatement.setString(1, startDate);
-            preparedStatement.setString(2, endDate);
-            
-            try(ResultSet row = preparedStatement.executeQuery()) {
-                while(row.next()) {
-                    Transaction transaction = mapRow(row);
-                    
-                    transactions.add(transaction);
-                }
-            }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return transactions;
-        
-    }
-    
-    public List<Transaction> searchByDescription(String description) {
-        
-        List<Transaction> transactions = new ArrayList<>();
-        
-        String dateQuery = "SELECT * FROM transactions WHERE description LIKE ? ORDER BY date DESC;";
-        
-        try(
-                Connection connection = basicDataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(dateQuery)
-        ) {
-            preparedStatement.setString(1, description);
-            
-            try(ResultSet row = preparedStatement.executeQuery()) {
-                while(row.next()) {
-                    Transaction transaction = mapRow(row);
-                    
-                    transactions.add(transaction);
-                }
-            }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return transactions;
-        
     }
     
     public List<Transaction> searchByVendor(String vendor) {
@@ -432,36 +347,7 @@ public class TransactionDao implements TransactionInt {
                     transactions.add(transaction);
                 }
             }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return transactions;
-        
-    }
-    
-    public List<Transaction> searchByAmount(float amount) {
-        
-        List<Transaction> transactions = new ArrayList<>();
-        
-        String dateQuery = "SELECT * FROM transactions WHERE amount = ? ORDER BY date DESC;";
-        
-        try(
-                Connection connection = basicDataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(dateQuery)
-        ) {
-            preparedStatement.setFloat(1, amount);
-            
-            try(ResultSet row = preparedStatement.executeQuery()) {
-                while(row.next()) {
-                    Transaction transaction = mapRow(row);
-                    
-                    transactions.add(transaction);
-                }
-            }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -470,6 +356,7 @@ public class TransactionDao implements TransactionInt {
     }
     
     public List<Transaction> monthToDate() {
+
         List<Transaction> filteredTransactions = new ArrayList<>();
         
         String sql = "SELECT * FROM transactions " +
@@ -487,8 +374,7 @@ public class TransactionDao implements TransactionInt {
                 
                 filteredTransactions.add(transaction);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -496,6 +382,7 @@ public class TransactionDao implements TransactionInt {
     }
     
     public List<Transaction> previousMonth() {
+
         List<Transaction> filteredTransactions = new ArrayList<>();
         
         String sql = "SELECT * " +
@@ -514,8 +401,7 @@ public class TransactionDao implements TransactionInt {
                 
                 filteredTransactions.add(transaction);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -523,6 +409,7 @@ public class TransactionDao implements TransactionInt {
     }
     
     public List<Transaction> yearToDate() {
+
         List<Transaction> filteredTransactions = new ArrayList<>();
         
         String sql = "SELECT * FROM transactions " +
@@ -539,8 +426,7 @@ public class TransactionDao implements TransactionInt {
                 
                 filteredTransactions.add(transaction);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -548,6 +434,7 @@ public class TransactionDao implements TransactionInt {
     }
     
     public List<Transaction> previousYear() {
+
         List<Transaction> filteredTransactions = new ArrayList<>();
         
         String sql = "SELECT * " +
@@ -566,8 +453,7 @@ public class TransactionDao implements TransactionInt {
                 
                 filteredTransactions.add(transaction);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         
@@ -575,6 +461,7 @@ public class TransactionDao implements TransactionInt {
     }
     
     private Transaction mapRow(ResultSet row) throws SQLException {
+
         int    id          = row.getInt("transaction_id");
         String date        = row.getTimestamp("date").toString();
         String description = row.getString("description");
@@ -585,6 +472,7 @@ public class TransactionDao implements TransactionInt {
     }
     
     public String getMaxDate() {
+
         String maxDate = "";
         String sql     = "SELECT MAX(date) FROM transactions";
         
@@ -607,6 +495,7 @@ public class TransactionDao implements TransactionInt {
     }
     
     public String getMinDate() {
+
         String minDate = "";
         String sql     = "SELECT MIN(date) FROM transactions";
         
@@ -620,8 +509,7 @@ public class TransactionDao implements TransactionInt {
                     minDate = row.getString(1);
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -629,6 +517,7 @@ public class TransactionDao implements TransactionInt {
     }
     
     public Float getMaxAmount() {
+
         float  maxAmount = 0;
         String sql       = "SELECT MAX(amount) FROM transactions";
         
@@ -641,8 +530,7 @@ public class TransactionDao implements TransactionInt {
                     maxAmount = row.getFloat(1); // there's only one column
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
