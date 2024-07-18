@@ -12,7 +12,7 @@ public class UserInterface {
 
     private static TransactionDao transactionDao;
     protected static Scanner scanner = new Scanner(System.in);
-    
+
     public static void init(String[] args) {
 
         BasicDataSource basicDataSource = new BasicDataSource();
@@ -21,20 +21,19 @@ public class UserInterface {
 
         basicDataSource.setUsername(args[0]);
         basicDataSource.setPassword(args[1]);
-        
-        transactionDao = new TransactionDao(basicDataSource);
-        
-    }
-    
-    public static void display(String[] args) {
 
+        transactionDao = new TransactionDao(basicDataSource);
+
+    }
+
+    public static void display(String[] args) {
         init(args);
-        int     userIn;
+        Scanner scanner = new Scanner(System.in);
+        int userIn = 0;
 
         welcomeMessage();
-        
-        do {
 
+        do {
             System.out.println("\n=====================================================================================================");
             System.out.println("                                         **  Main Menu  **");
             System.out.println("                        -------------------------------------------------");
@@ -46,39 +45,39 @@ public class UserInterface {
             System.out.println("\t~ 3) Display Ledger");
             System.out.println("\t~ 4) Exit Program");
 
-            userIn = scanner.nextInt();
-            
-            switch(userIn) {
-                case 1:
-                    //Add a deposit prompt the user for a deposit information and save it to CSV
-                    addDeposit();
-                    break;
-                case 2:
-                    // prompt user for debit information to save to file
-                    makePayment();
-                    break;
-                case 3:
-                    //display ledger menu
-                    displayLedgerMenu();
-                    break;
-                case 4:
-                    exitMessage();
-                    break;
-                default:
-                    commandError();
-                
+            try {
+                userIn = Integer.parseInt(scanner.nextLine()); // Read input as String and parse to int
+                switch (userIn) {
+                    case 1:
+                        // Add a deposit prompt the user for deposit information and save it to CSV
+                        addDeposit();
+
+                        break;
+                    case 2:
+                        // Prompt user for debit information to save to file
+                        makePayment();
+                        break;
+                    case 3:
+                        // Display ledger menu
+                        displayLedgerMenu();
+                        break;
+                    case 4:
+                        exitMessage();
+                        break;
+                    default:
+                        commandError();
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid number.");
             }
-        } while(userIn != 4);
+
+        } while (userIn != 4);
     }
-    
-    
     //method to display ledger menu
     private static void displayLedgerMenu() {
-
-        int ledgerCommand;
+        int ledgerCommand = 0;
 
         do {
-
             System.out.println("\n=====================================================================================================");
             System.out.println("                                        **  Ledger Menu  **");
             System.out.println("                        -------------------------------------------------");
@@ -91,55 +90,48 @@ public class UserInterface {
             System.out.println("\t~ 4) Reports Menu");
             System.out.println("\t~ 5) Back to Main Menu");
 
-            ledgerCommand = scanner.nextInt();
-            scanner.nextLine();//consume new line
+            try {
+                ledgerCommand = Integer.parseInt(scanner.nextLine()); // Read input as String and parse to int
 
-            switch(ledgerCommand) {
-
-                case 1:
-                    //display all entries
-                    List<Transaction> allTransactions = transactionDao.getAllTransactions();
-
-                    displayTransactions(allTransactions);
-                    break;
-
-                case 2:
-                    // display deposits
-                    List<Transaction> onlyDepositsTransactions = transactionDao.getAllDeposits();
-
-                    displayTransactions(onlyDepositsTransactions);
-                    break;
-
-                case 3:
-                    //display payments
-                    List<Transaction> onlyPaymentsTransactions = transactionDao.getAllPayments();
-
-                    displayTransactions(onlyPaymentsTransactions);
-                    break;
-
-                case 4:
-                    //reports menu
-                    displayReportsMenu(scanner);
-                    break;
-
-                case 5:
-                    break;
-
-                default:
-                    commandError();
-
+                switch (ledgerCommand) {
+                    case 1:
+                        // display all entries
+                        List<Transaction> allTransactions = transactionDao.getAllTransactions();
+                        displayTransactions(allTransactions);
+                        break;
+                    case 2:
+                        // display deposits
+                        List<Transaction> onlyDepositsTransactions = transactionDao.getAllDeposits();
+                        displayTransactions(onlyDepositsTransactions);
+                        break;
+                    case 3:
+                        // display payments
+                        List<Transaction> onlyPaymentsTransactions = transactionDao.getAllPayments();
+                        displayTransactions(onlyPaymentsTransactions);
+                        break;
+                    case 4:
+                        // reports menu
+                        displayReportsMenu(scanner);
+                        break;
+                    case 5:
+                        break;
+                    default:
+                        commandError();
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid number.");
             }
-        } while(ledgerCommand != 5);
-        
+
+        } while (ledgerCommand != 5);
     }
-    
+
+
+
     //method to display reports menu
     private static void displayReportsMenu(Scanner scanner) {
-
-        int reportCommand;
+        int reportCommand = 0;
 
         do {
-
             System.out.println("\n=====================================================================================================");
             System.out.println("                                       **  Reports Menu  **");
             System.out.println("                        -------------------------------------------------");
@@ -154,106 +146,91 @@ public class UserInterface {
             System.out.println("\t~ 6) Custom Search");
             System.out.println("\t~ 7) Back to Ledger Menu");
 
-            reportCommand = scanner.nextInt();
-            scanner.nextLine();//consume new line;
-            
-            switch(reportCommand) {
+            try {
+                reportCommand = Integer.parseInt(scanner.nextLine()); // Read input as String and parse to int
 
-                case 1:
-
-                    List<Transaction> monthToDateTransactions = transactionDao.monthToDate();
-                    
-                    displayTransactions(monthToDateTransactions);
-                    break;
-
-                case 2:
-
-                    List<Transaction> previousMonthTransactions = transactionDao.previousMonth();
-                    
-                    displayTransactions(previousMonthTransactions);
-                    break;
-
-                case 3:
-
-                    List<Transaction> yearToDateTransactions = transactionDao.yearToDate();
-                    
-                    displayTransactions(yearToDateTransactions);
-                    break;
-
-                case 4:
-
-                    List<Transaction> previousYearTransactions = transactionDao.previousYear();
-                    
-                    displayTransactions(previousYearTransactions);
-                    break;
-
-                case 5:
-
-                    System.out.println("\n* Enter vendor name: ");
-                    
-                    String vendorName = scanner.nextLine();
-                    List<Transaction> vendorTransactions = transactionDao.searchByVendor(vendorName);
-                        if(vendorTransactions.isEmpty()) {
+                switch (reportCommand) {
+                    case 1:
+                        List<Transaction> monthToDateTransactions = transactionDao.monthToDate();
+                        displayTransactions(monthToDateTransactions);
+                        break;
+                    case 2:
+                        List<Transaction> previousMonthTransactions = transactionDao.previousMonth();
+                        displayTransactions(previousMonthTransactions);
+                        break;
+                    case 3:
+                        List<Transaction> yearToDateTransactions = transactionDao.yearToDate();
+                        displayTransactions(yearToDateTransactions);
+                        break;
+                    case 4:
+                        List<Transaction> previousYearTransactions = transactionDao.previousYear();
+                        displayTransactions(previousYearTransactions);
+                        break;
+                    case 5:
+                        System.out.println("\n* Enter vendor name: ");
+                        String vendorName = scanner.nextLine();
+                        List<Transaction> vendorTransactions = transactionDao.searchByVendor(vendorName);
+                        if (vendorTransactions.isEmpty()) {
                             System.out.println("                        -------------------------------------------------");
                             System.out.println("                                     -- No transactions found --");
                             System.out.println("                        -------------------------------------------------");
                         } else {
                             displayTransactions(vendorTransactions);
                         }
-                    break;
+                        break;
+                    case 6:
+                        System.out.println("* Enter start date (yyyy-MM-dd): ");
+                        String startDateInput = scanner.nextLine().trim();
 
-                case 6:
-                    
-                    System.out.println("* Enter start date (yyyy-MM-dd): ");
-                    String startDateInput = scanner.nextLine().trim();
-                    
-                    System.out.println("* Enter end date (yyyy-MM-dd): ");
-                    String endDateInput = scanner.nextLine().trim();
-                    
-                    System.out.println("* Enter description: ");
-                    String descriptionCustomSearch = scanner.nextLine().trim();
-                    
-                    System.out.println("* Enter vendor name: ");
-                    String vendorCustomSearch = scanner.nextLine().trim();
-                    
-                    System.out.println("* Enter amount: ");
-                    String amountInput = scanner.nextLine().trim();
-                    
-                    if(!amountInput.isBlank()) {
-                        float amountCustomSearch = Float.parseFloat(amountInput);
-                        
-                        List<Transaction> amountList = transactionDao.search(startDateInput, endDateInput, descriptionCustomSearch, vendorCustomSearch, amountCustomSearch);
-                        displayTransactions(amountList);
-                    } else if(
-                            (!startDateInput.isBlank() ||
+                        System.out.println("* Enter end date (yyyy-MM-dd): ");
+                        String endDateInput = scanner.nextLine().trim();
+
+                        System.out.println("* Enter description: ");
+                        String descriptionCustomSearch = scanner.nextLine().trim();
+
+                        System.out.println("* Enter vendor name: ");
+                        String vendorCustomSearch = scanner.nextLine().trim();
+
+                        System.out.println("* Enter amount: ");
+                        String amountInput = scanner.nextLine().trim();
+
+                        try {
+                            if (!amountInput.isBlank()) {
+                                float amountCustomSearch = Float.parseFloat(amountInput);
+                                List<Transaction> amountList = transactionDao.search(startDateInput, endDateInput, descriptionCustomSearch, vendorCustomSearch, amountCustomSearch);
+                                displayTransactions(amountList);
+                            } else if ((!startDateInput.isBlank() ||
                                     !endDateInput.isBlank() ||
                                     !descriptionCustomSearch.isBlank() ||
                                     !vendorCustomSearch.isBlank()) &&
-                                    amountInput.isBlank()
-                    ) {
-                        List<Transaction> amountList = transactionDao.search(startDateInput, endDateInput, descriptionCustomSearch, vendorCustomSearch);
-                        displayTransactions(amountList);
-                    } else if(
-                            startDateInput.isBlank() &&
-                            endDateInput.isBlank() &&
-                            descriptionCustomSearch.isBlank() &&
-                            vendorCustomSearch.isBlank() &&
-                            amountInput.isBlank()
-                    ) {
-                        System.out.println("\n\tNo results found.\n");
-                    }
-                    break;
-
-                case 7:
-                    break;
-
-                default:
-                    commandError();
-
+                                    amountInput.isBlank()) {
+                                List<Transaction> amountList = transactionDao.search(startDateInput, endDateInput, descriptionCustomSearch, vendorCustomSearch);
+                                displayTransactions(amountList);
+                            } else if (startDateInput.isBlank() &&
+                                    endDateInput.isBlank() &&
+                                    descriptionCustomSearch.isBlank() &&
+                                    vendorCustomSearch.isBlank() &&
+                                    amountInput.isBlank()) {
+                                System.out.println("\n\tNo results found.\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid amount entered. Please enter a valid number.");
+                        }
+                        break;
+                    case 7:
+                        break;
+                    default:
+                        commandError();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
             }
-        } while(reportCommand != 7);
+
+        } while (reportCommand != 7);
     }
-    
+
+
+
     // method to receive deposit inputs
     private static void addDeposit() {
 
@@ -264,26 +241,26 @@ public class UserInterface {
         System.out.println("                                        -- Add a Deposit --");
         System.out.println("                        -------------------------------------------------");
 
-        scanner.nextLine(); // consumes new line
+
         System.out.print("\n* Enter the description of your deposit: ");
         String description = scanner.nextLine();
-        
-        
+
+
         System.out.print("* Enter the vendor: ");
         String vendor = scanner.nextLine();
-        
+
         System.out.print("* Enter the dollar amount: $");
-        
+
         // checks to see if the user put a double value or not.
         if(scanner.hasNextFloat()) {
 
             float dollarAmount = scanner.nextFloat();
-            scanner.nextLine();
-            
+           scanner.nextLine();
+
             LocalDateTime     dateTime  = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String            date      = dateTime.format(formatter);
-            
+
             Transaction deposit = new Transaction(date, description, vendor, dollarAmount);
 
             System.out.println("\n=====================================================================================================");
@@ -294,13 +271,13 @@ public class UserInterface {
 
         } else {
 
-            scanner.nextLine();
+           scanner.nextLine();
             inputError();
 
         }
-        
+
     }
-    
+
     //method to receive payment inputs
     private static void makePayment() {
 
@@ -310,26 +287,26 @@ public class UserInterface {
         System.out.println("                        -------------------------------------------------");
         System.out.println("                                         -- Make a Payment --");
         System.out.println("                        -------------------------------------------------");
-        
-        scanner.nextLine(); // consumes new line
+
+
         System.out.print("\n* Enter the description of your payment: ");
         String description = scanner.nextLine();
-        
+
         System.out.print("* Enter the vendor: ");
         String vendor = scanner.nextLine();
-        
+
         System.out.print("* Enter the dollar amount: $");
-        
+
         // checks to see if the user put a float value or not.
         if(scanner.hasNextFloat()) {
 
             float dollarAmount = scanner.nextFloat() * -1;
             scanner.nextLine();
-            
+
             LocalDateTime     dateTime  = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String            date      = dateTime.format(formatter);
-            
+
             Transaction payment = new Transaction(date, description, vendor, dollarAmount);
 
             System.out.println("\n=====================================================================================================");
@@ -345,7 +322,7 @@ public class UserInterface {
 
         }
     }
-    
+
     private static void displayTransactions(List<Transaction> transactions) {
 
         if(!transactions.isEmpty()) {
@@ -366,7 +343,7 @@ public class UserInterface {
                 );
             }
         }
-        
+
         if(transactions.isEmpty()) {
 
             System.out.println("                        -------------------------------------------------");
@@ -374,7 +351,7 @@ public class UserInterface {
             System.out.println("                        -------------------------------------------------");
 
         }
-        
+
     }
 
 
