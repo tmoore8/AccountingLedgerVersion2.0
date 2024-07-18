@@ -27,8 +27,10 @@ public class UserInterface {
     }
 
     public static void display(String[] args) {
+
         init(args);
         Scanner scanner = new Scanner(System.in);
+
         int userIn = 0;
 
         welcomeMessage();
@@ -64,11 +66,10 @@ public class UserInterface {
                     case 4:
                         exitMessage();
                         break;
-                    default:
-                        commandError();
+
                 }
             } catch (Exception e) {
-                System.out.println("Invalid input. Please enter a valid number.");
+                commandError();
             }
 
         } while (userIn != 4);
@@ -115,17 +116,14 @@ public class UserInterface {
                         break;
                     case 5:
                         break;
-                    default:
-                        commandError();
+
                 }
             } catch (Exception e) {
-                System.out.println("Invalid input. Please enter a valid number.");
+                commandError();
             }
 
         } while (ledgerCommand != 5);
     }
-
-
 
     //method to display reports menu
     private static void displayReportsMenu(Scanner scanner) {
@@ -220,16 +218,14 @@ public class UserInterface {
                     case 7:
                         break;
                     default:
-                        commandError();
+
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
+                commandError();
             }
 
         } while (reportCommand != 7);
     }
-
-
 
     // method to receive deposit inputs
     private static void addDeposit() {
@@ -241,10 +237,8 @@ public class UserInterface {
         System.out.println("                                        -- Add a Deposit --");
         System.out.println("                        -------------------------------------------------");
 
-
         System.out.print("\n* Enter the description of your deposit: ");
         String description = scanner.nextLine();
-
 
         System.out.print("* Enter the vendor: ");
         String vendor = scanner.nextLine();
@@ -255,7 +249,7 @@ public class UserInterface {
         if(scanner.hasNextFloat()) {
 
             float dollarAmount = scanner.nextFloat();
-           scanner.nextLine();
+            scanner.nextLine();
 
             LocalDateTime     dateTime  = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -271,11 +265,10 @@ public class UserInterface {
 
         } else {
 
-           scanner.nextLine();
+            scanner.nextLine();
             inputError();
 
         }
-
     }
 
     //method to receive payment inputs
@@ -287,7 +280,6 @@ public class UserInterface {
         System.out.println("                        -------------------------------------------------");
         System.out.println("                                         -- Make a Payment --");
         System.out.println("                        -------------------------------------------------");
-
 
         System.out.print("\n* Enter the description of your payment: ");
         String description = scanner.nextLine();
@@ -354,7 +346,6 @@ public class UserInterface {
 
     }
 
-
     private static void welcomeMessage() {
 
         System.out.println("\n=====================================================================================================");
@@ -389,6 +380,7 @@ public class UserInterface {
 
     private static void exitMessage() {
 
+        System.out.println("\n=====================================================================================================\n");
         System.out.println("                        -------------------------------------------------");
         System.out.println("                                -- Thank you for banking with us --");
         System.out.println("                        -------------------------------------------------\n");
@@ -401,6 +393,7 @@ public class UserInterface {
                 "                    | $$  | $$ /$$__  $$  \\  $$$/| $$_____/       /$$__  $$             \n" +
                 "                    | $$  | $$|  $$$$$$$   \\  $/ |  $$$$$$$      |  $$$$$$$             \n" +
                 "                    |__/  |__/ \\_______/    \\_/   \\_______/       \\_______/             \n" +
+                "                                                                                   \n" +
                 "           /$$   /$$ /$$                           /$$$$$$$                     /$$\n" +
                 "          | $$$ | $$|__/                          | $$__  $$                   | $$\n" +
                 "          | $$$$| $$ /$$  /$$$$$$$  /$$$$$$       | $$  \\ $$ /$$$$$$  /$$   /$$| $$\n" +
