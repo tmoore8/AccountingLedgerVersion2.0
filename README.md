@@ -157,11 +157,12 @@ One piece of code that I found interesting was within the makePayment method. Th
 ></details>
 
 ### Marshall's Code
+One piece of code that I found interesting was part of the Custom Search feature in the `UserInterface` class. This piece of code avoids issues caused by empty inputs from the user by scanning for a `String` instead of a `float`. If the input from the user is NOT empty, the `String` amount will be converted into a `float`. Otherwise, if the input IS empty, the `amount` will default to the maximum/largest `amount` stored in the database.
 
 ><details>
 ><summary> Empty Input for Custom Search Amount Code </summary>
 >
-> ![MarshallInterestingPieceOfCode.PNG](src\main\java\com\ps\Images\MarshallInterestingPieceOfCode.PNG)
+> ![MarshallInterestingPieceOfCode](https://github.com/user-attachments/assets/07e0fda2-c409-42b4-be47-205040a5e1d5)
 ></details>
 
 ### Tristan's Code
