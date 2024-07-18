@@ -159,9 +159,9 @@ One piece of code that I found interesting was within the makePayment method. Th
 ### Marshall's Code
 
 ><details>
-><summary> Interesting Code </summary>
+><summary> Empty Input for Custom Search Amount Code </summary>
 >
-> Image here
+> ![MarshallInterestingPieceOfCode.PNG](src%2Fmain%2Fjava%2Fcom%2Fps%2FImages%2FMarshallInterestingPieceOfCode.PNG)
 ></details>
 
 ### Tristan's Code
