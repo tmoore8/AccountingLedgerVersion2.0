@@ -161,7 +161,7 @@ One piece of code that I found interesting was within the makePayment method. Th
 ><details>
 ><summary> Empty Input for Custom Search Amount Code </summary>
 >
-> ![MarshallInterestingPieceOfCode.PNG](src%2Fmain%2Fjava%2Fcom%2Fps%2FImages%2FMarshallInterestingPieceOfCode.PNG)
+> ![MarshallInterestingPieceOfCode.PNG](src\main\java\com\ps\Images\MarshallInterestingPieceOfCode.PNG)
 ></details>
 
 ### Tristan's Code
