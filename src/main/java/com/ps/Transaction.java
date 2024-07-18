@@ -66,18 +66,11 @@ public class Transaction {
     
     @Override
     public String toString() {
-//        return "Transaction{" +
-//                "id=" + id +
-//                ", date='" + date + '\'' +
-//                ", description='" + description + '\'' +
-//                ", vendor='" + vendor + '\'' +
-//                ", amount=" + amount +
-//                '}';
         
         if(amount == Math.abs(amount)) {
-            return String.format("~ %-12s %-30s %-20s $%-10.2f", date, description, vendor, amount);
+            return String.format("~ %-12s      %-30s %-20s $%-10.2f", date, description, vendor, amount);
         } else if(amount != Math.abs(amount)) {
-            return String.format("~ %-12s %-30s %-20s -$%-10.2f", date, description, vendor, Math.abs(amount));
+            return String.format("~ %-12s      %-30s %-20s -$%-10.2f", date, description, vendor, Math.abs(amount));
         }
         return null;
     }
