@@ -19,6 +19,7 @@ CREATE TABLE transactions (
     description VARCHAR(255),
     vendor VARCHAR(255),
     amount DECIMAL(10, 2)
+    
 );
 # ---------------------------------------------------------------------- #
 # Add table "Payments"                                                 #
@@ -59,7 +60,16 @@ INSERT INTO transactions (date, description, vendor, amount) VALUES
 ('2024-01-17 13:00:00', 'Chair', 'Ikea', -120.00),
 ('2024-01-18 14:15:00', 'Invoice 1009 paid', 'Grace', 1875.00),
 ('2024-01-19 15:30:00', 'Desk', 'Ikea', -250.00),
-('2024-01-20 16:45:00', 'Invoice 1010 paid', 'Hannah', 1950.00);
+('2024-01-20 16:45:00', 'Invoice 1010 paid', 'Hannah', 1950.00),
+('2024-06-19 12:30:00', 'Dresser', 'Ikea', -350.00),
+('2023-12-08 16:45:00', 'Invoice 1011 paid', 'Tristan', 1950.00),
+('2024-07-15 14:23:00', 'Potato woman', 'Potato man', -383379.22),
+('2024-07-11 02:47:00', 'Overwatch Skins', 'Blizzard', -350.00),
+('2024-07-08 11:48:00', 'Invoice 1012 paid', 'Alisha', 950.00),
+('2024-07-17 11:11:00', 'Laptop', 'Amazon', -1050.00),
+('2024-07-10 16:45:00', 'Invoice 1013 paid', 'Marshall', 1375.12),
+('2024-07-14 12:20:00', 'Weight Set', 'TikTok Shop', -150.00),
+('2024-07-09 11:45:00', 'Invoice 1014 paid', 'Hibba', 1950.00);
 /*  INSERT Payments  */
 INSERT INTO payments (transaction_id) VALUES
 (1),
@@ -71,7 +81,13 @@ INSERT INTO payments (transaction_id) VALUES
 (13),
 (15),
 (17),
-(19);
+(19),
+(21),
+(23),
+(24),
+(26),
+(28);
+
 /*  INSERT Deposits  */
 INSERT INTO deposits (transaction_id) VALUES
 (2),
@@ -83,5 +99,9 @@ INSERT INTO deposits (transaction_id) VALUES
 (14),
 (16),
 (18),
-(20);
+(20),
+(22),
+(25),
+(27),
+(29);
 
